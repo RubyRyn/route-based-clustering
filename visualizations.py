@@ -42,7 +42,6 @@ def plot_static_map(locations: List[Location], road_matrix: np.ndarray,
     
     plt.tight_layout()
     plt.savefig('Output\\delivery_map_static.png', dpi=150, bbox_inches='tight')
-    print("Static map saved to delivery_map_static.png")
     plt.show()
 
 
@@ -106,7 +105,6 @@ def plot_openstreetmap(locations: List[Location], road_calculator: RoadDistanceC
 
     plugins.Fullscreen().add_to(m)
     m.save(f"Output\\{filename}")
-    print(f"Interactive map saved to Output\\{filename}")
 
 
 
@@ -148,8 +146,15 @@ def plot_clustered_routes(
     ).add_to(m)
 
     # Color scheme for clusters
-    colors = ['blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 
-              'beige', 'darkblue', 'darkgreen', 'cadetblue']
+    colors = ['#0C2C55', '#F63049','#FA8112','#5B23FF','#84934A',
+              '#C40C0C','#F075AE','#5DD3B6','#9929EA','#E5BA41',
+              '#3F9AAE','#8F0177','#EF7722','#78C841','#6B3F69',
+               '#D92C54','#932F67','#5A9CB5','#6AECE1','#005461',
+                '#CF0F0F','#434E78','#C47BE4','#DD88CF','#006A67',
+                 '#229799','#7886C7','#F72C5B','#EF9C66','#FFA1F5',
+                  '#FFC55A','#00DFA2','#14B1AB' ]
+    # colors = ['blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 
+    #            'darkblue', 'darkgreen', 'cadetblue']
 
     # Plot client markers
     clients = locations[1:]
@@ -208,7 +213,6 @@ def plot_clustered_routes(
                 tooltip=f"Cluster {cluster_id + 1}: {office.name} → {client.name}"
             ).add_to(m)
             
-            print(f"  ✓ Cluster {cluster_id + 1}: {office.name} → {client.name} ({road_dist:.2f} km)")
         else:
             # Fallback to straight line if geometry not available
             folium.PolyLine(
@@ -257,9 +261,4 @@ def plot_clustered_routes(
 
     # Add fullscreen plugin
     plugins.Fullscreen().add_to(m)
-    
-    # Save map
     m.save(f"Output\\{filename}")
-    print(f"\n✓ Clustered routes saved to Output\\{filename}")
-    print(f"  {len(clients)} routes shown, grouped into {num_clusters} clusters")
-    print(f"  Open this file in your browser to explore!")

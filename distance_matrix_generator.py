@@ -90,7 +90,7 @@ class DistanceMatrixGenerator:
                 if road_dist is None:
                     if self.use_fallback:
                         road_dist = euc_dist * 1.3
-                        print(f"  ⚠ Using fallback for {self.locations[i].name} -> {self.locations[j].name}")
+                        print(f"Using fallback for {self.locations[i].name} -> {self.locations[j].name}")
                     else:
                         raise RuntimeError(f"Failed to get road distance")
                 
@@ -99,7 +99,7 @@ class DistanceMatrixGenerator:
                 
                 completed_calls += 1
                 if completed_calls % 10 == 0:
-                    print(f"  Progress: {completed_calls}/{total_calls}")
+                    print(f"Progress: {completed_calls}/{total_calls}")
                 
                 if delay_between_calls > 0:
                     time.sleep(delay_between_calls)
@@ -115,28 +115,7 @@ class DistanceMatrixGenerator:
         """Get list of location names"""
         return [loc.name for loc in self.locations]
     
-    # def print_summary(self):
-    #     """Print summary statistics"""
-    #     if self.road_matrix is None:
-    #         print("No matrices generated yet.")
-    #         return
-        
-    #     print("\n" + "=" * 70)
-    #     print("DISTANCE MATRIX SUMMARY")
-    #     print("=" * 70)
-    #     print(f"\nLocations: {len(self.locations)}")
-    #     print(f"API Type: {self.road_calculator.api_type}")
-        
-    #     n = len(self.locations)
-    #     euc_upper = self.euclidean_matrix[np.triu_indices(n, k=1)]
-    #     road_upper = self.road_matrix[np.triu_indices(n, k=1)]
-    #     ratios = road_upper / euc_upper
-        
-    #     print(f"\nDistance Statistics (km):")
-    #     print(f"  Euclidean - Mean: {euc_upper.mean():.2f}, Min: {euc_upper.min():.2f}, Max: {euc_upper.max():.2f}")
-    #     print(f"  Road      - Mean: {road_upper.mean():.2f}, Min: {road_upper.min():.2f}, Max: {road_upper.max():.2f}")
-    #     print(f"\nRoad/Euclidean Ratio: Mean: {ratios.mean():.2f}x, Min: {ratios.min():.2f}x, Max: {ratios.max():.2f}x")
-    
+
     def export_to_json(self, filename: str = 'delivery_data.json'):
         """Export all data to JSON"""
         data = {

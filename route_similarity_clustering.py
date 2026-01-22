@@ -33,7 +33,7 @@ class RouteSimilarityClustering:
                                     route2: List[Tuple[float, float]]) -> float:
         """Calculate what ratio of the routes overlap"""
         shared_points = 0
-        threshold = 0.001
+        threshold = 0.001 
         min_length = min(len(route1), len(route2))
         
         for i in range(min_length):

@@ -1,0 +1,33 @@
+{
+  "Cluster_1": [
+    "Client 15",
+    "Client 16",
+    "Client 7",
+    "Client 8"
+  ],
+  "Cluster_2": [
+    "Client 6"
+  ],
+  "Cluster_3": [
+    "Client 11",
+    "Client 12",
+    "Client 3",
+    "Client 4"
+  ],
+  "Cluster_4": [
+    "Client 14",
+    "Client 9"
+  ],
+  "Cluster_5": [
+    "Client 13",
+    "Client 17"
+  ],
+  "Cluster_6": [
+    "Client 10",
+    "Client 2"
+  ],
+  "Cluster_7": [
+    "Client 1",
+    "Client 5"
+  ]
+}

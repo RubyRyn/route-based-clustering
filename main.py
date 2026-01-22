@@ -1,18 +1,24 @@
 
 import sys
+from K_medoids_plus_plus import KMedoidsPlusPlus, optimize_workload_balance
 from distance_matrix_generator import DistanceMatrixGenerator
 from route_similarity_clustering import RouteSimilarityClustering
-from direction_n_distance_clustering import DirectionDistanceClustering
+from direction_n_distance_clustering import DirectionDistanceClustering # wrost 
 from sequential_routing_clustering import SequentialRoutingClustering
 from route_graph_clustering import RouteGraphClustering
 from visualizations import plot_static_map, plot_openstreetmap, plot_clustered_routes
-
+# from route_graph_clustering_v1_1 import RouteGraphClustering
 
 def main():
     
+    # Configuration
     api_choice = 'osrm_demo'
-    csv_filename = 'Input\\Sample data for route-awareness.csv'
-    n_clusters = 5
+    due_date = '2025-09-02'
+    n_clusters = 14
+    # sample_data = 'Sample data for route-awareness.csv'
+    # csv_filename = f'Input\\{sample_data}'
+    csv_filename = f'Input\\Einme_clients_{due_date}.csv'
+    
     
     
     print("\nLoading locations and generating distance matrix...")
@@ -44,29 +50,20 @@ def main():
     
     # generator.print_summary()
     
-    # Step 2: Export data
     generator.export_to_json('delivery_data.json')
     generator.export_to_csv('distance_matrix.csv')
     
-    # Step 3: Visualize base map
+    
     plot_static_map(locations, road_matrix, euclidean_matrix)
     plot_openstreetmap(locations, generator.road_calculator, 
                       road_matrix, euclidean_matrix, 'routes_map.html')
     
-    
-    # Choose clustering method
-    # print("\nSelect clustering method:")
-    # print("  1. Route Similarity (best for shared routes)")
-    # print("  2. Direction & Distance (fast, simple)")
-    # print("  3. Sequential Routing (practical)")
-    # print("  4. Graph Community Detection (automatic)")
-    
-    method_choice = 4
+    method_choice = 5
     
     if method_choice == 1:
         clusterer = RouteSimilarityClustering(generator.road_calculator, locations)
         clusterer.road_matrix = road_matrix
-        labels = clusterer.cluster(n_clusters=n_clusters, method='spectral') #spectral hierarchical
+        labels = clusterer.cluster(n_clusters=n_clusters, method='hierarchical') #spectral hierarchical
         
     elif method_choice == 2:
         clusterer = DirectionDistanceClustering(generator.road_calculator, locations)
@@ -77,24 +74,21 @@ def main():
         clusterer = SequentialRoutingClustering(generator.road_calculator, locations)
         clusterer.road_matrix = road_matrix
         labels = clusterer.cluster(n_routes=n_clusters)
-        
     elif method_choice == 4:
         clusterer = RouteGraphClustering(generator.road_calculator, locations)
-        labels = clusterer.cluster(similarity_threshold=0.5)
-    
-    
-    clients = locations[1:]
-    for cluster_id in range(max(labels) + 1):
-        cluster_clients = [clients[i] for i, label in enumerate(labels) if label == cluster_id]
-        print(f"\nRoute {cluster_id + 1}: {len(cluster_clients)} clients")
-        for client in cluster_clients:
-            client_idx = locations.index(client)
-            dist = road_matrix[0, client_idx]
-            print(f"  - {client.name:20} ({dist:.2f} km from office)")
+        clusterer.road_matrix = road_matrix
+        labels = clusterer.cluster(similarity_threshold=0.5, visualize=True)
+        clusterer.print_clustering_stats(labels)
+    elif method_choice == 5:
+        clusterer = KMedoidsPlusPlus(road_matrix, locations, max_clusters=n_clusters)
+        labels = clusterer.fit() # OR labels = clusterer.fit_minimax() #Strict minimax optimization
+        balanced_labels = optimize_workload_balance(clusterer, max_swap_iterations=50)
+        clusterer.labels = balanced_labels
+        # clusterer.print_results()
+        assignments = clusterer.get_cluster_assignments()
+
 
     print("\nVisualizing clusters...")
-
-    # Visualize (no optimization needed!)
     plot_clustered_routes(
         locations=locations,
         labels=labels,

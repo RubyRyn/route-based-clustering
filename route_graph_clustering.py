@@ -29,7 +29,7 @@ class RouteGraphClustering:
             return 0.0
         
         shared_points = 0
-        threshold = 0.001
+        threshold = 0.001 #it's in degrees, the approx distance is ~ 100m
         min_length = min(len(route1), len(route2))
         
         for i in range(min_length):
@@ -44,8 +44,11 @@ class RouteGraphClustering:
         avg_length = (len(route1) + len(route2)) / 2
         return shared_points / avg_length if avg_length > 0 else 0
     
-    def cluster(self, similarity_threshold: float = 0.5) -> np.ndarray:
-        """Cluster using graph community detection"""
+    def cluster(self, similarity_threshold: float = 0.6) -> np.ndarray:
+        """Cluster using graph community detection
+        similarity_threshold: float = 0.6 : Consider two routes similar 
+        if at least 60% of their points overlap consecutively from the start.”
+        """
         n_clients = len(self.clients)
         G = nx.Graph()
         
