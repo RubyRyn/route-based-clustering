@@ -141,3 +141,37 @@ class DistanceMatrixGenerator:
         df_euc.to_csv(f'Output\\euclidean_{filename}')
         df_road.to_csv(f'Output\\road_{filename}')
         print(f"Exported matrices to euclidean_{filename} and road_{filename}")
+    
+    def import_from_csv(self, euclidean_file: str, road_file: str) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Import previously exported distance matrices from CSV files.
+        Skips API calls entirely.
+        
+        Args:
+            euclidean_file: Path to euclidean distance matrix CSV
+            road_file: Path to road distance matrix CSV
+            
+        Returns:
+            Tuple of (euclidean_matrix, road_matrix)
+        """
+        print(f"\nLoading matrices from CSV files...")
+        
+        # Read CSVs (first column is the index/names)
+        df_euc = pd.read_csv(euclidean_file, index_col=0)
+        df_road = pd.read_csv(road_file, index_col=0)
+        
+        # Convert to numpy arrays
+        self.euclidean_matrix = df_euc.values
+        self.road_matrix = df_road.values
+        
+        print(f"  Loaded euclidean matrix: {self.euclidean_matrix.shape}")
+        print(f"  Loaded road matrix: {self.road_matrix.shape}")
+        
+        # Verify dimensions match locations if locations are loaded
+        if self.locations:
+            n = len(self.locations)
+            if self.euclidean_matrix.shape != (n, n):
+                raise ValueError(f"Matrix size {self.euclidean_matrix.shape} doesn't match {n} locations")
+        
+        print(f"Matrices loaded successfully!")
+        return self.euclidean_matrix, self.road_matrix

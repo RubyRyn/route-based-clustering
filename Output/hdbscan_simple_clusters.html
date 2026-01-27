@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_b9d61c01b2371245f483972c0c235a5e {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+                bottom: 50px; right: 50px; width: 250px;
+                background-color: white; border: 2px solid grey; z-index: 9999;
+                font-size: 14px; padding: 10px; border-radius: 5px;">
+    <p style="margin: 0; font-weight: bold; font-size: 16px;">Road Distance Clusters</p>
+    <hr style="margin: 5px 0;">
+    <p style="margin: 5px 0;"><b>Total clusters:</b> 15</p>
+    <p style="margin: 5px 0;"><b>Outliers:</b> 15</p>
+    <p style="margin: 5px 0;"><b>Total clients:</b> 51</p>
+    <hr style="margin: 5px 0;">
+    
+        <p style="margin: 3px 0;">
+            <span style="background-color:blue; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 1
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:green; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 2
+            </span> 4 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:orange; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 3
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:purple; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 4
+            </span> 3 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:darkred; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 5
+            </span> 3 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:darkblue; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 6
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:darkgreen; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 7
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:cadetblue; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 8
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:pink; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 9
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:black; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 10
+            </span> 3 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:lightgreen; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 11
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:lightblue; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 12
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:beige; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 13
+            </span> 3 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:salmon; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 14
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:cyan; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster 15
+            </span> 2 clients
+        </p>
+        
+        <p style="margin: 3px 0;">
+            <span style="background-color:gray; padding: 2px 8px; color: white; border-radius: 3px;">
+                Outliers
+            </span> 15 clients
+        </p>
+        
+    <hr style="margin: 5px 0;">
+    <p style="margin: 3px 0; font-size: 11px; font-style: italic;">
+        Clusters based on road distance (not straight-line)
+    </p>
+    </div>
+    
+    
+            <div class="folium-map" id="map_b9d61c01b2371245f483972c0c235a5e" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_b9d61c01b2371245f483972c0c235a5e = L.map(
+                "map_b9d61c01b2371245f483972c0c235a5e",
+                {
+                    center: [16.727403692307693, 95.11133478846152],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_efa139ef1497ca388d5c3a5e2468865b = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_efa139ef1497ca388d5c3a5e2468865b.addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var marker_da504e3886cc5e087c01f6223fd8f73e = L.marker(
+                [16.900944, 95.178472],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_a3ea96f544ceb44d530582093a3d4917 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "building",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9d16955f2ab437fb84b8a352486dd3c4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4c17a28ea5adebaccd245918396a370c = $(`<div id="html_4c17a28ea5adebaccd245918396a370c" style="width: 100.0%; height: 100.0%;"><b>Einme_Office</b><br>Office</div>`)[0];
+                popup_9d16955f2ab437fb84b8a352486dd3c4.setContent(html_4c17a28ea5adebaccd245918396a370c);
+            
+        
+
+        marker_da504e3886cc5e087c01f6223fd8f73e.bindPopup(popup_9d16955f2ab437fb84b8a352486dd3c4)
+        ;
+
+        
+    
+    
+            marker_da504e3886cc5e087c01f6223fd8f73e.bindTooltip(
+                `<div>
+                     Office
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_da504e3886cc5e087c01f6223fd8f73e.setIcon(icon_a3ea96f544ceb44d530582093a3d4917);
+            
+    
+            var marker_966e1dac339b01e4adc4e3ad9e75bae0 = L.marker(
+                [16.724409, 95.326206],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_3a9c20827461679673af504e6c85a612 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ad2f94b0196d7b88435aaf6607aaa420 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_add6e4ef98fa86d85d2293a772666841 = $(`<div id="html_add6e4ef98fa86d85d2293a772666841" style="width: 100.0%; height: 100.0%;">                 <b>503274</b><br>                 <b>Cluster:</b> 1<br>                 <b>Distance from office:</b> 105.17 km             </div>`)[0];
+                popup_ad2f94b0196d7b88435aaf6607aaa420.setContent(html_add6e4ef98fa86d85d2293a772666841);
+            
+        
+
+        marker_966e1dac339b01e4adc4e3ad9e75bae0.bindPopup(popup_ad2f94b0196d7b88435aaf6607aaa420)
+        ;
+
+        
+    
+    
+            marker_966e1dac339b01e4adc4e3ad9e75bae0.bindTooltip(
+                `<div>
+                     Cluster 1: 503274
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_966e1dac339b01e4adc4e3ad9e75bae0.setIcon(icon_3a9c20827461679673af504e6c85a612);
+            
+    
+            var marker_1c7156df4dbbc599090d4a15983c31cd = L.marker(
+                [16.731062, 95.332498],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f08e41b72ecb0663769cdae55e906ffa = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7425c1e63880b61968b36832879452b1 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6d148cafaba407cfe13369b4084a5ca3 = $(`<div id="html_6d148cafaba407cfe13369b4084a5ca3" style="width: 100.0%; height: 100.0%;">                 <b>508143</b><br>                 <b>Cluster:</b> 1<br>                 <b>Distance from office:</b> 106.50 km             </div>`)[0];
+                popup_7425c1e63880b61968b36832879452b1.setContent(html_6d148cafaba407cfe13369b4084a5ca3);
+            
+        
+
+        marker_1c7156df4dbbc599090d4a15983c31cd.bindPopup(popup_7425c1e63880b61968b36832879452b1)
+        ;
+
+        
+    
+    
+            marker_1c7156df4dbbc599090d4a15983c31cd.bindTooltip(
+                `<div>
+                     Cluster 1: 508143
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1c7156df4dbbc599090d4a15983c31cd.setIcon(icon_f08e41b72ecb0663769cdae55e906ffa);
+            
+    
+            var polygon_821a9928a05e564c23455b6a46300a81 = L.polygon(
+                [[16.85144, 95.025032], [16.836935, 95.030319], [16.838989, 95.025169], [16.8463, 95.023682], [16.85144, 95.025032]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+        var popup_a617c8ccb7491109b53694f328c35f0e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c6c92b289455462bbef2bdd562fce2b1 = $(`<div id="html_c6c92b289455462bbef2bdd562fce2b1" style="width: 100.0%; height: 100.0%;">Cluster 2 (4 clients)</div>`)[0];
+                popup_a617c8ccb7491109b53694f328c35f0e.setContent(html_c6c92b289455462bbef2bdd562fce2b1);
+            
+        
+
+        polygon_821a9928a05e564c23455b6a46300a81.bindPopup(popup_a617c8ccb7491109b53694f328c35f0e)
+        ;
+
+        
+    
+    
+            var marker_c69514b7fccfabafd64c51f37c3d91d9 = L.marker(
+                [16.85144, 95.025032],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_77abc63f98d0761d184e074f3aad86cc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ef9e6892d4574dca22cecdf7d20e904f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b224b4ad3477dc21d9f54804069a312b = $(`<div id="html_b224b4ad3477dc21d9f54804069a312b" style="width: 100.0%; height: 100.0%;">                 <b>465601</b><br>                 <b>Cluster:</b> 2<br>                 <b>Distance from office:</b> 24.04 km             </div>`)[0];
+                popup_ef9e6892d4574dca22cecdf7d20e904f.setContent(html_b224b4ad3477dc21d9f54804069a312b);
+            
+        
+
+        marker_c69514b7fccfabafd64c51f37c3d91d9.bindPopup(popup_ef9e6892d4574dca22cecdf7d20e904f)
+        ;
+
+        
+    
+    
+            marker_c69514b7fccfabafd64c51f37c3d91d9.bindTooltip(
+                `<div>
+                     Cluster 2: 465601
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c69514b7fccfabafd64c51f37c3d91d9.setIcon(icon_77abc63f98d0761d184e074f3aad86cc);
+            
+    
+            var marker_7dd04be957d84f674ab0ed376265a71b = L.marker(
+                [16.8463, 95.023682],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_75a192ae5a1f5eb8d6f046925300ff6c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b0035ef8ea2cfd0a974e558dadfde1ed = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c5d489dfb08261386c53d17623ea5974 = $(`<div id="html_c5d489dfb08261386c53d17623ea5974" style="width: 100.0%; height: 100.0%;">                 <b>525511</b><br>                 <b>Cluster:</b> 2<br>                 <b>Distance from office:</b> 24.62 km             </div>`)[0];
+                popup_b0035ef8ea2cfd0a974e558dadfde1ed.setContent(html_c5d489dfb08261386c53d17623ea5974);
+            
+        
+
+        marker_7dd04be957d84f674ab0ed376265a71b.bindPopup(popup_b0035ef8ea2cfd0a974e558dadfde1ed)
+        ;
+
+        
+    
+    
+            marker_7dd04be957d84f674ab0ed376265a71b.bindTooltip(
+                `<div>
+                     Cluster 2: 525511
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7dd04be957d84f674ab0ed376265a71b.setIcon(icon_75a192ae5a1f5eb8d6f046925300ff6c);
+            
+    
+            var marker_5048a1fc735380630b1f0a3fd82b54c7 = L.marker(
+                [16.838989, 95.025169],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_aaecb75001c439da6ec21e8180d95816 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_36efbb551e5d5ccf3c01edbf688d711a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_96c87e5234056f61cb1fb072507c4fbb = $(`<div id="html_96c87e5234056f61cb1fb072507c4fbb" style="width: 100.0%; height: 100.0%;">                 <b>570117</b><br>                 <b>Cluster:</b> 2<br>                 <b>Distance from office:</b> 25.52 km             </div>`)[0];
+                popup_36efbb551e5d5ccf3c01edbf688d711a.setContent(html_96c87e5234056f61cb1fb072507c4fbb);
+            
+        
+
+        marker_5048a1fc735380630b1f0a3fd82b54c7.bindPopup(popup_36efbb551e5d5ccf3c01edbf688d711a)
+        ;
+
+        
+    
+    
+            marker_5048a1fc735380630b1f0a3fd82b54c7.bindTooltip(
+                `<div>
+                     Cluster 2: 570117
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5048a1fc735380630b1f0a3fd82b54c7.setIcon(icon_aaecb75001c439da6ec21e8180d95816);
+            
+    
+            var marker_c81b01d8c0e84febfac1a0cdfacedc55 = L.marker(
+                [16.836935, 95.030319],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_4a3b69242788f5c54640e2a828c47093 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_95af02d6acd930398daaeb7e305c646f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_bcb5acf2210759dc590f62781d2ce5b6 = $(`<div id="html_bcb5acf2210759dc590f62781d2ce5b6" style="width: 100.0%; height: 100.0%;">                 <b>570120</b><br>                 <b>Cluster:</b> 2<br>                 <b>Distance from office:</b> 26.14 km             </div>`)[0];
+                popup_95af02d6acd930398daaeb7e305c646f.setContent(html_bcb5acf2210759dc590f62781d2ce5b6);
+            
+        
+
+        marker_c81b01d8c0e84febfac1a0cdfacedc55.bindPopup(popup_95af02d6acd930398daaeb7e305c646f)
+        ;
+
+        
+    
+    
+            marker_c81b01d8c0e84febfac1a0cdfacedc55.bindTooltip(
+                `<div>
+                     Cluster 2: 570120
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c81b01d8c0e84febfac1a0cdfacedc55.setIcon(icon_4a3b69242788f5c54640e2a828c47093);
+            
+    
+            var marker_93777bc0d3036001e8341a701757372b = L.marker(
+                [16.749373, 95.195483],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f83d8132b0b14dcb3732f2c655448de7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9fe45fa51aa525324045794d56568c16 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f1ab0dcdba73e4016c7c899aed9dee64 = $(`<div id="html_f1ab0dcdba73e4016c7c899aed9dee64" style="width: 100.0%; height: 100.0%;">                 <b>469207</b><br>                 <b>Cluster:</b> 3<br>                 <b>Distance from office:</b> 40.35 km             </div>`)[0];
+                popup_9fe45fa51aa525324045794d56568c16.setContent(html_f1ab0dcdba73e4016c7c899aed9dee64);
+            
+        
+
+        marker_93777bc0d3036001e8341a701757372b.bindPopup(popup_9fe45fa51aa525324045794d56568c16)
+        ;
+
+        
+    
+    
+            marker_93777bc0d3036001e8341a701757372b.bindTooltip(
+                `<div>
+                     Cluster 3: 469207
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_93777bc0d3036001e8341a701757372b.setIcon(icon_f83d8132b0b14dcb3732f2c655448de7);
+            
+    
+            var marker_5dae456c12bbf5150e74ac8f2f37b600 = L.marker(
+                [16.742331, 95.200027],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_ea8be43a8f7ee74093670f0685141424 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_540c272a7dc3ed80e41a67ea21f6e3ff = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_128cc4938db4a7208066636400d83490 = $(`<div id="html_128cc4938db4a7208066636400d83490" style="width: 100.0%; height: 100.0%;">                 <b>478841</b><br>                 <b>Cluster:</b> 3<br>                 <b>Distance from office:</b> 40.13 km             </div>`)[0];
+                popup_540c272a7dc3ed80e41a67ea21f6e3ff.setContent(html_128cc4938db4a7208066636400d83490);
+            
+        
+
+        marker_5dae456c12bbf5150e74ac8f2f37b600.bindPopup(popup_540c272a7dc3ed80e41a67ea21f6e3ff)
+        ;
+
+        
+    
+    
+            marker_5dae456c12bbf5150e74ac8f2f37b600.bindTooltip(
+                `<div>
+                     Cluster 3: 478841
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5dae456c12bbf5150e74ac8f2f37b600.setIcon(icon_ea8be43a8f7ee74093670f0685141424);
+            
+    
+            var polygon_d2392bbd4993c82cd43009f6e40cc66f = L.polygon(
+                [[16.635611, 95.063339], [16.631192, 95.067146], [16.632023, 95.053719], [16.635611, 95.063339]],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+        var popup_81fe647259a17efa03eb77db1dbfd0f2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_07be4fd3e69fca83826e4843f6373a38 = $(`<div id="html_07be4fd3e69fca83826e4843f6373a38" style="width: 100.0%; height: 100.0%;">Cluster 4 (3 clients)</div>`)[0];
+                popup_81fe647259a17efa03eb77db1dbfd0f2.setContent(html_07be4fd3e69fca83826e4843f6373a38);
+            
+        
+
+        polygon_d2392bbd4993c82cd43009f6e40cc66f.bindPopup(popup_81fe647259a17efa03eb77db1dbfd0f2)
+        ;
+
+        
+    
+    
+            var marker_f99cc734b68bc98d7327f5139dc6a062 = L.marker(
+                [16.632023, 95.053719],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f85aacde83154ea795e8edc3c27857e1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "purple",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4597b7af78720c26154d222792e04038 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_13544cb2f022470ca88022a060776899 = $(`<div id="html_13544cb2f022470ca88022a060776899" style="width: 100.0%; height: 100.0%;">                 <b>475871</b><br>                 <b>Cluster:</b> 4<br>                 <b>Distance from office:</b> 39.07 km             </div>`)[0];
+                popup_4597b7af78720c26154d222792e04038.setContent(html_13544cb2f022470ca88022a060776899);
+            
+        
+
+        marker_f99cc734b68bc98d7327f5139dc6a062.bindPopup(popup_4597b7af78720c26154d222792e04038)
+        ;
+
+        
+    
+    
+            marker_f99cc734b68bc98d7327f5139dc6a062.bindTooltip(
+                `<div>
+                     Cluster 4: 475871
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f99cc734b68bc98d7327f5139dc6a062.setIcon(icon_f85aacde83154ea795e8edc3c27857e1);
+            
+    
+            var marker_bc855a68bddcf69cf18680bc05add26a = L.marker(
+                [16.635611, 95.063339],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_7c5ec4451a87120b91e1e5ee5db1c2de = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "purple",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2878c6d14b0a551cdbc1c7f34334dc4a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f91dc3b21485cda20639ffdfbc87c667 = $(`<div id="html_f91dc3b21485cda20639ffdfbc87c667" style="width: 100.0%; height: 100.0%;">                 <b>481132</b><br>                 <b>Cluster:</b> 4<br>                 <b>Distance from office:</b> 37.57 km             </div>`)[0];
+                popup_2878c6d14b0a551cdbc1c7f34334dc4a.setContent(html_f91dc3b21485cda20639ffdfbc87c667);
+            
+        
+
+        marker_bc855a68bddcf69cf18680bc05add26a.bindPopup(popup_2878c6d14b0a551cdbc1c7f34334dc4a)
+        ;
+
+        
+    
+    
+            marker_bc855a68bddcf69cf18680bc05add26a.bindTooltip(
+                `<div>
+                     Cluster 4: 481132
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bc855a68bddcf69cf18680bc05add26a.setIcon(icon_7c5ec4451a87120b91e1e5ee5db1c2de);
+            
+    
+            var marker_1b5778466f920acf34e8c3d5619e5f34 = L.marker(
+                [16.631192, 95.067146],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_4032ac4f20b92a70bfaafbe30f761c0c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "purple",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_49aea1c79df7e9d7b2bd4dde9ecd127d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_364da7fd96a090c1846fe85bf7b41c63 = $(`<div id="html_364da7fd96a090c1846fe85bf7b41c63" style="width: 100.0%; height: 100.0%;">                 <b>502767</b><br>                 <b>Cluster:</b> 4<br>                 <b>Distance from office:</b> 37.96 km             </div>`)[0];
+                popup_49aea1c79df7e9d7b2bd4dde9ecd127d.setContent(html_364da7fd96a090c1846fe85bf7b41c63);
+            
+        
+
+        marker_1b5778466f920acf34e8c3d5619e5f34.bindPopup(popup_49aea1c79df7e9d7b2bd4dde9ecd127d)
+        ;
+
+        
+    
+    
+            marker_1b5778466f920acf34e8c3d5619e5f34.bindTooltip(
+                `<div>
+                     Cluster 4: 502767
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1b5778466f920acf34e8c3d5619e5f34.setIcon(icon_4032ac4f20b92a70bfaafbe30f761c0c);
+            
+    
+            var polygon_7148f38eb4ac00e83f1118189e69ff3f = L.polygon(
+                [[16.607418, 95.014854], [16.615465, 95.023094], [16.610384, 95.018608], [16.607418, 95.014854]],
+                {"bubblingMouseEvents": true, "color": "darkred", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkred", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+        var popup_a5be3b4964eb5d645adeea7e2653297b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_27cdc874a177f1b950d4b1addf0c340a = $(`<div id="html_27cdc874a177f1b950d4b1addf0c340a" style="width: 100.0%; height: 100.0%;">Cluster 5 (3 clients)</div>`)[0];
+                popup_a5be3b4964eb5d645adeea7e2653297b.setContent(html_27cdc874a177f1b950d4b1addf0c340a);
+            
+        
+
+        polygon_7148f38eb4ac00e83f1118189e69ff3f.bindPopup(popup_a5be3b4964eb5d645adeea7e2653297b)
+        ;
+
+        
+    
+    
+            var marker_12351b94905c8122af36659a4d6d67af = L.marker(
+                [16.607418, 95.014854],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_41a66fac41226b84de3001d9003cce66 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkred",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_44d35fbeeda5e05afafb6e1d8ec73b58 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_afd5df062c177319b4884ebab13c5b82 = $(`<div id="html_afd5df062c177319b4884ebab13c5b82" style="width: 100.0%; height: 100.0%;">                 <b>461546</b><br>                 <b>Cluster:</b> 5<br>                 <b>Distance from office:</b> 43.00 km             </div>`)[0];
+                popup_44d35fbeeda5e05afafb6e1d8ec73b58.setContent(html_afd5df062c177319b4884ebab13c5b82);
+            
+        
+
+        marker_12351b94905c8122af36659a4d6d67af.bindPopup(popup_44d35fbeeda5e05afafb6e1d8ec73b58)
+        ;
+
+        
+    
+    
+            marker_12351b94905c8122af36659a4d6d67af.bindTooltip(
+                `<div>
+                     Cluster 5: 461546
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_12351b94905c8122af36659a4d6d67af.setIcon(icon_41a66fac41226b84de3001d9003cce66);
+            
+    
+            var marker_21ca480fcf6d582831bd9f56a93e1ccc = L.marker(
+                [16.615465, 95.023094],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_6acfbed83b40d4e28b738982c823a917 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkred",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a4936cef22a7b04fe7443a160760f499 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_adb65c6d719c04fa433b93a3afa2f4de = $(`<div id="html_adb65c6d719c04fa433b93a3afa2f4de" style="width: 100.0%; height: 100.0%;">                 <b>462915</b><br>                 <b>Cluster:</b> 5<br>                 <b>Distance from office:</b> 42.82 km             </div>`)[0];
+                popup_a4936cef22a7b04fe7443a160760f499.setContent(html_adb65c6d719c04fa433b93a3afa2f4de);
+            
+        
+
+        marker_21ca480fcf6d582831bd9f56a93e1ccc.bindPopup(popup_a4936cef22a7b04fe7443a160760f499)
+        ;
+
+        
+    
+    
+            marker_21ca480fcf6d582831bd9f56a93e1ccc.bindTooltip(
+                `<div>
+                     Cluster 5: 462915
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_21ca480fcf6d582831bd9f56a93e1ccc.setIcon(icon_6acfbed83b40d4e28b738982c823a917);
+            
+    
+            var marker_c3db6a5f425ac23298427c74391019f0 = L.marker(
+                [16.610384, 95.018608],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_b8cc4aeece7d11c97dacb51c0e3c56b9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkred",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_df064cb2e86ac13c4d7bb48b11c4cd0d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d991d83edfff44d98cad812aa372f985 = $(`<div id="html_d991d83edfff44d98cad812aa372f985" style="width: 100.0%; height: 100.0%;">                 <b>500145</b><br>                 <b>Cluster:</b> 5<br>                 <b>Distance from office:</b> 43.56 km             </div>`)[0];
+                popup_df064cb2e86ac13c4d7bb48b11c4cd0d.setContent(html_d991d83edfff44d98cad812aa372f985);
+            
+        
+
+        marker_c3db6a5f425ac23298427c74391019f0.bindPopup(popup_df064cb2e86ac13c4d7bb48b11c4cd0d)
+        ;
+
+        
+    
+    
+            marker_c3db6a5f425ac23298427c74391019f0.bindTooltip(
+                `<div>
+                     Cluster 5: 500145
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c3db6a5f425ac23298427c74391019f0.setIcon(icon_b8cc4aeece7d11c97dacb51c0e3c56b9);
+            
+    
+            var marker_1232bbffc42c25ac86990a0d7330af88 = L.marker(
+                [16.741737, 95.0714],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_b26afd6fc7bfac41dbd2a16d757e17a8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkblue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0dd32e9e84bca86c3d5f9167b31afd11 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f18923be0c1415e7f0f7c347a3847854 = $(`<div id="html_f18923be0c1415e7f0f7c347a3847854" style="width: 100.0%; height: 100.0%;">                 <b>450132</b><br>                 <b>Cluster:</b> 6<br>                 <b>Distance from office:</b> 24.89 km             </div>`)[0];
+                popup_0dd32e9e84bca86c3d5f9167b31afd11.setContent(html_f18923be0c1415e7f0f7c347a3847854);
+            
+        
+
+        marker_1232bbffc42c25ac86990a0d7330af88.bindPopup(popup_0dd32e9e84bca86c3d5f9167b31afd11)
+        ;
+
+        
+    
+    
+            marker_1232bbffc42c25ac86990a0d7330af88.bindTooltip(
+                `<div>
+                     Cluster 6: 450132
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1232bbffc42c25ac86990a0d7330af88.setIcon(icon_b26afd6fc7bfac41dbd2a16d757e17a8);
+            
+    
+            var marker_7770e362c9978244d1034d881b385bbf = L.marker(
+                [16.72901, 95.05986],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_eab4fc22651d8576e870f8a714686a86 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkblue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3d7e432e2f1074775a20a437a616d977 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f8c543340becec0f6a4f589fc04eb308 = $(`<div id="html_f8c543340becec0f6a4f589fc04eb308" style="width: 100.0%; height: 100.0%;">                 <b>459399</b><br>                 <b>Cluster:</b> 6<br>                 <b>Distance from office:</b> 26.26 km             </div>`)[0];
+                popup_3d7e432e2f1074775a20a437a616d977.setContent(html_f8c543340becec0f6a4f589fc04eb308);
+            
+        
+
+        marker_7770e362c9978244d1034d881b385bbf.bindPopup(popup_3d7e432e2f1074775a20a437a616d977)
+        ;
+
+        
+    
+    
+            marker_7770e362c9978244d1034d881b385bbf.bindTooltip(
+                `<div>
+                     Cluster 6: 459399
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7770e362c9978244d1034d881b385bbf.setIcon(icon_eab4fc22651d8576e870f8a714686a86);
+            
+    
+            var marker_bda6d7ff4ed341b7ba207da10acf9d5b = L.marker(
+                [16.72147, 95.036842],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_cbb64791107647b79a19c24ff70ea2de = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkgreen",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2453e6dca1fbd27129ad10e5984309be = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_996026f27cd2aba0e207618d2daf4eff = $(`<div id="html_996026f27cd2aba0e207618d2daf4eff" style="width: 100.0%; height: 100.0%;">                 <b>444982</b><br>                 <b>Cluster:</b> 7<br>                 <b>Distance from office:</b> 29.56 km             </div>`)[0];
+                popup_2453e6dca1fbd27129ad10e5984309be.setContent(html_996026f27cd2aba0e207618d2daf4eff);
+            
+        
+
+        marker_bda6d7ff4ed341b7ba207da10acf9d5b.bindPopup(popup_2453e6dca1fbd27129ad10e5984309be)
+        ;
+
+        
+    
+    
+            marker_bda6d7ff4ed341b7ba207da10acf9d5b.bindTooltip(
+                `<div>
+                     Cluster 7: 444982
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bda6d7ff4ed341b7ba207da10acf9d5b.setIcon(icon_cbb64791107647b79a19c24ff70ea2de);
+            
+    
+            var marker_1b4589a760a87470f5441e7dc965fe02 = L.marker(
+                [16.728861, 95.027832],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_a44a2b4de70459b38ca56d07c8328f78 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "darkgreen",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bb7c4b3b776d926b00bbe7b17961c0ad = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f6193779e955ced4ca587c0581b385a7 = $(`<div id="html_f6193779e955ced4ca587c0581b385a7" style="width: 100.0%; height: 100.0%;">                 <b>465566</b><br>                 <b>Cluster:</b> 7<br>                 <b>Distance from office:</b> 29.65 km             </div>`)[0];
+                popup_bb7c4b3b776d926b00bbe7b17961c0ad.setContent(html_f6193779e955ced4ca587c0581b385a7);
+            
+        
+
+        marker_1b4589a760a87470f5441e7dc965fe02.bindPopup(popup_bb7c4b3b776d926b00bbe7b17961c0ad)
+        ;
+
+        
+    
+    
+            marker_1b4589a760a87470f5441e7dc965fe02.bindTooltip(
+                `<div>
+                     Cluster 7: 465566
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1b4589a760a87470f5441e7dc965fe02.setIcon(icon_a44a2b4de70459b38ca56d07c8328f78);
+            
+    
+            var marker_7ca0ef5e014a6baa03acf4947b52c2e9 = L.marker(
+                [16.77013, 95.11129],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_b61337695bad3f55154ef48741126485 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "cadetblue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_207deb2d684c85b5b2d0a72b5a48d0be = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_57fd7910e25e3b484229005ca725bd12 = $(`<div id="html_57fd7910e25e3b484229005ca725bd12" style="width: 100.0%; height: 100.0%;">                 <b>494929</b><br>                 <b>Cluster:</b> 8<br>                 <b>Distance from office:</b> 18.08 km             </div>`)[0];
+                popup_207deb2d684c85b5b2d0a72b5a48d0be.setContent(html_57fd7910e25e3b484229005ca725bd12);
+            
+        
+
+        marker_7ca0ef5e014a6baa03acf4947b52c2e9.bindPopup(popup_207deb2d684c85b5b2d0a72b5a48d0be)
+        ;
+
+        
+    
+    
+            marker_7ca0ef5e014a6baa03acf4947b52c2e9.bindTooltip(
+                `<div>
+                     Cluster 8: 494929
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7ca0ef5e014a6baa03acf4947b52c2e9.setIcon(icon_b61337695bad3f55154ef48741126485);
+            
+    
+            var marker_ed5b24a04dfd4831b6241b2dea91e3f2 = L.marker(
+                [16.76264, 95.109787],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_65fbd35da56cf467d96d949537acf05d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "cadetblue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e36e0897b3f2ed7681c56d685b82ebae = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_76e3f90de75ccf6cf1a4ed7cdb346fa3 = $(`<div id="html_76e3f90de75ccf6cf1a4ed7cdb346fa3" style="width: 100.0%; height: 100.0%;">                 <b>494939</b><br>                 <b>Cluster:</b> 8<br>                 <b>Distance from office:</b> 18.68 km             </div>`)[0];
+                popup_e36e0897b3f2ed7681c56d685b82ebae.setContent(html_76e3f90de75ccf6cf1a4ed7cdb346fa3);
+            
+        
+
+        marker_ed5b24a04dfd4831b6241b2dea91e3f2.bindPopup(popup_e36e0897b3f2ed7681c56d685b82ebae)
+        ;
+
+        
+    
+    
+            marker_ed5b24a04dfd4831b6241b2dea91e3f2.bindTooltip(
+                `<div>
+                     Cluster 8: 494939
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ed5b24a04dfd4831b6241b2dea91e3f2.setIcon(icon_65fbd35da56cf467d96d949537acf05d);
+            
+    
+            var marker_39d2b5959e21e3af9041e9473143aaf7 = L.marker(
+                [16.67972, 95.156639],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f8bc8d1138d9e8b0ecec0005502c1208 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "pink",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5dcd830c2a831db589b3bb613865f5b4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cbdd6153873297916fd81176c6821f0f = $(`<div id="html_cbdd6153873297916fd81176c6821f0f" style="width: 100.0%; height: 100.0%;">                 <b>463080</b><br>                 <b>Cluster:</b> 9<br>                 <b>Distance from office:</b> 30.63 km             </div>`)[0];
+                popup_5dcd830c2a831db589b3bb613865f5b4.setContent(html_cbdd6153873297916fd81176c6821f0f);
+            
+        
+
+        marker_39d2b5959e21e3af9041e9473143aaf7.bindPopup(popup_5dcd830c2a831db589b3bb613865f5b4)
+        ;
+
+        
+    
+    
+            marker_39d2b5959e21e3af9041e9473143aaf7.bindTooltip(
+                `<div>
+                     Cluster 9: 463080
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_39d2b5959e21e3af9041e9473143aaf7.setIcon(icon_f8bc8d1138d9e8b0ecec0005502c1208);
+            
+    
+            var marker_80e74f4759b01627899c59ed40877a77 = L.marker(
+                [16.701789, 95.162478],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f6ff4369162d03898d78e696071ac653 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "pink",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3b95017763da7a28347887118736bcd5 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0b8e489fb07e29e8f5df83815700a641 = $(`<div id="html_0b8e489fb07e29e8f5df83815700a641" style="width: 100.0%; height: 100.0%;">                 <b>475228</b><br>                 <b>Cluster:</b> 9<br>                 <b>Distance from office:</b> 29.65 km             </div>`)[0];
+                popup_3b95017763da7a28347887118736bcd5.setContent(html_0b8e489fb07e29e8f5df83815700a641);
+            
+        
+
+        marker_80e74f4759b01627899c59ed40877a77.bindPopup(popup_3b95017763da7a28347887118736bcd5)
+        ;
+
+        
+    
+    
+            marker_80e74f4759b01627899c59ed40877a77.bindTooltip(
+                `<div>
+                     Cluster 9: 475228
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_80e74f4759b01627899c59ed40877a77.setIcon(icon_f6ff4369162d03898d78e696071ac653);
+            
+    
+            var polygon_ab0421b08b9a89e3f194c887a93d25f2 = L.polygon(
+                [[16.673719, 95.088173], [16.68997, 95.095253], [16.681841, 95.096458], [16.673719, 95.088173]],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "black", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+        var popup_94bfc20daf83864d3a82bc2410e7453a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0ab69ab5afe158e6fa449628f63128f5 = $(`<div id="html_0ab69ab5afe158e6fa449628f63128f5" style="width: 100.0%; height: 100.0%;">Cluster 10 (3 clients)</div>`)[0];
+                popup_94bfc20daf83864d3a82bc2410e7453a.setContent(html_0ab69ab5afe158e6fa449628f63128f5);
+            
+        
+
+        polygon_ab0421b08b9a89e3f194c887a93d25f2.bindPopup(popup_94bfc20daf83864d3a82bc2410e7453a)
+        ;
+
+        
+    
+    
+            var marker_30dbf438c50b703bfae07bc7a06a3a93 = L.marker(
+                [16.681841, 95.096458],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_0c8fadbf47bdd8029b5efa10d91c086c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "black",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9b0dbf60ef3f960f14b397b1926474a0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4caf4860b3341e66deda0c37fee1d2ce = $(`<div id="html_4caf4860b3341e66deda0c37fee1d2ce" style="width: 100.0%; height: 100.0%;">                 <b>440606</b><br>                 <b>Cluster:</b> 10<br>                 <b>Distance from office:</b> 31.87 km             </div>`)[0];
+                popup_9b0dbf60ef3f960f14b397b1926474a0.setContent(html_4caf4860b3341e66deda0c37fee1d2ce);
+            
+        
+
+        marker_30dbf438c50b703bfae07bc7a06a3a93.bindPopup(popup_9b0dbf60ef3f960f14b397b1926474a0)
+        ;
+
+        
+    
+    
+            marker_30dbf438c50b703bfae07bc7a06a3a93.bindTooltip(
+                `<div>
+                     Cluster 10: 440606
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_30dbf438c50b703bfae07bc7a06a3a93.setIcon(icon_0c8fadbf47bdd8029b5efa10d91c086c);
+            
+    
+            var marker_3c8ad0bc530d1e522f5c4149e2918fb0 = L.marker(
+                [16.673719, 95.088173],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_4924fdc84b6beff4233bb9055fa7feea = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "black",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a5810b9b3260309c51c7cef49e06d63f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8a6d80ad00440c3e88ae2a68eb29d2c6 = $(`<div id="html_8a6d80ad00440c3e88ae2a68eb29d2c6" style="width: 100.0%; height: 100.0%;">                 <b>499764</b><br>                 <b>Cluster:</b> 10<br>                 <b>Distance from office:</b> 35.13 km             </div>`)[0];
+                popup_a5810b9b3260309c51c7cef49e06d63f.setContent(html_8a6d80ad00440c3e88ae2a68eb29d2c6);
+            
+        
+
+        marker_3c8ad0bc530d1e522f5c4149e2918fb0.bindPopup(popup_a5810b9b3260309c51c7cef49e06d63f)
+        ;
+
+        
+    
+    
+            marker_3c8ad0bc530d1e522f5c4149e2918fb0.bindTooltip(
+                `<div>
+                     Cluster 10: 499764
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3c8ad0bc530d1e522f5c4149e2918fb0.setIcon(icon_4924fdc84b6beff4233bb9055fa7feea);
+            
+    
+            var marker_073d25de6f84d25fe60d9a9e9356553c = L.marker(
+                [16.68997, 95.095253],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_fb0d4f42cb3579cde8b13e7542a8194e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "black",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_60802b8113a93b4b39f413f56bffd893 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a9076334ece374947fa004e70631463f = $(`<div id="html_a9076334ece374947fa004e70631463f" style="width: 100.0%; height: 100.0%;">                 <b>499765</b><br>                 <b>Cluster:</b> 10<br>                 <b>Distance from office:</b> 30.70 km             </div>`)[0];
+                popup_60802b8113a93b4b39f413f56bffd893.setContent(html_a9076334ece374947fa004e70631463f);
+            
+        
+
+        marker_073d25de6f84d25fe60d9a9e9356553c.bindPopup(popup_60802b8113a93b4b39f413f56bffd893)
+        ;
+
+        
+    
+    
+            marker_073d25de6f84d25fe60d9a9e9356553c.bindTooltip(
+                `<div>
+                     Cluster 10: 499765
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_073d25de6f84d25fe60d9a9e9356553c.setIcon(icon_fb0d4f42cb3579cde8b13e7542a8194e);
+            
+    
+            var marker_5b054a91dc56ab4db553669f1a457e4d = L.marker(
+                [16.76152, 95.127037],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_0c249a1febe4be92277732ce77ec74ed = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightgreen",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3c0f7f2af0e5a315f68f32dcea5ed74d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b9f11b796bafb9284532445ee62183bb = $(`<div id="html_b9f11b796bafb9284532445ee62183bb" style="width: 100.0%; height: 100.0%;">                 <b>578421</b><br>                 <b>Cluster:</b> 11<br>                 <b>Distance from office:</b> 20.70 km             </div>`)[0];
+                popup_3c0f7f2af0e5a315f68f32dcea5ed74d.setContent(html_b9f11b796bafb9284532445ee62183bb);
+            
+        
+
+        marker_5b054a91dc56ab4db553669f1a457e4d.bindPopup(popup_3c0f7f2af0e5a315f68f32dcea5ed74d)
+        ;
+
+        
+    
+    
+            marker_5b054a91dc56ab4db553669f1a457e4d.bindTooltip(
+                `<div>
+                     Cluster 11: 578421
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5b054a91dc56ab4db553669f1a457e4d.setIcon(icon_0c249a1febe4be92277732ce77ec74ed);
+            
+    
+            var marker_334bbcd89e4336f34f0849304799ab08 = L.marker(
+                [16.757484, 95.134712],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_b5defcab601d98ab3d51f3c19c3473f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightgreen",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fbf568b295d0cb27ff5910a69db8d1d1 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1d055f67119acc47e7bf5d4e8d1551ea = $(`<div id="html_1d055f67119acc47e7bf5d4e8d1551ea" style="width: 100.0%; height: 100.0%;">                 <b>578422</b><br>                 <b>Cluster:</b> 11<br>                 <b>Distance from office:</b> 19.78 km             </div>`)[0];
+                popup_fbf568b295d0cb27ff5910a69db8d1d1.setContent(html_1d055f67119acc47e7bf5d4e8d1551ea);
+            
+        
+
+        marker_334bbcd89e4336f34f0849304799ab08.bindPopup(popup_fbf568b295d0cb27ff5910a69db8d1d1)
+        ;
+
+        
+    
+    
+            marker_334bbcd89e4336f34f0849304799ab08.bindTooltip(
+                `<div>
+                     Cluster 11: 578422
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_334bbcd89e4336f34f0849304799ab08.setIcon(icon_b5defcab601d98ab3d51f3c19c3473f3);
+            
+    
+            var marker_3292a5558f2772b74fbd9b7b05a009f4 = L.marker(
+                [16.76527, 95.157463],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_99eee9243672784f1152f3a7ff6e0756 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightblue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6fc3c14cd4824d34c1bf5e88242b7e82 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_80d9322b42c18b78c49a0bca9576c093 = $(`<div id="html_80d9322b42c18b78c49a0bca9576c093" style="width: 100.0%; height: 100.0%;">                 <b>471396</b><br>                 <b>Cluster:</b> 12<br>                 <b>Distance from office:</b> 17.65 km             </div>`)[0];
+                popup_6fc3c14cd4824d34c1bf5e88242b7e82.setContent(html_80d9322b42c18b78c49a0bca9576c093);
+            
+        
+
+        marker_3292a5558f2772b74fbd9b7b05a009f4.bindPopup(popup_6fc3c14cd4824d34c1bf5e88242b7e82)
+        ;
+
+        
+    
+    
+            marker_3292a5558f2772b74fbd9b7b05a009f4.bindTooltip(
+                `<div>
+                     Cluster 12: 471396
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3292a5558f2772b74fbd9b7b05a009f4.setIcon(icon_99eee9243672784f1152f3a7ff6e0756);
+            
+    
+            var marker_9659f5b6cc729cde135f1a202d2c948c = L.marker(
+                [16.764116, 95.177628],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_cdf0f1e87982e3b080e031dd43a55bf9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "lightblue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7013d437ccc5e85d4a2e46e7e8b6b520 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e4ec8a5ad170755b389719f65d4611e0 = $(`<div id="html_e4ec8a5ad170755b389719f65d4611e0" style="width: 100.0%; height: 100.0%;">                 <b>520249</b><br>                 <b>Cluster:</b> 12<br>                 <b>Distance from office:</b> 19.82 km             </div>`)[0];
+                popup_7013d437ccc5e85d4a2e46e7e8b6b520.setContent(html_e4ec8a5ad170755b389719f65d4611e0);
+            
+        
+
+        marker_9659f5b6cc729cde135f1a202d2c948c.bindPopup(popup_7013d437ccc5e85d4a2e46e7e8b6b520)
+        ;
+
+        
+    
+    
+            marker_9659f5b6cc729cde135f1a202d2c948c.bindTooltip(
+                `<div>
+                     Cluster 12: 520249
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9659f5b6cc729cde135f1a202d2c948c.setIcon(icon_cdf0f1e87982e3b080e031dd43a55bf9);
+            
+    
+            var polygon_a726ad75bc5f35bf78b3a9b9f4fcf3bf = L.polygon(
+                [[16.71158, 95.134491], [16.718891, 95.148956], [16.714506, 95.147491], [16.71158, 95.134491]],
+                {"bubblingMouseEvents": true, "color": "beige", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "beige", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+        var popup_81353ffcdb7ce782bf2f8fb23184a7db = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ba551ee43945c6136b287289b7fac53e = $(`<div id="html_ba551ee43945c6136b287289b7fac53e" style="width: 100.0%; height: 100.0%;">Cluster 13 (3 clients)</div>`)[0];
+                popup_81353ffcdb7ce782bf2f8fb23184a7db.setContent(html_ba551ee43945c6136b287289b7fac53e);
+            
+        
+
+        polygon_a726ad75bc5f35bf78b3a9b9f4fcf3bf.bindPopup(popup_81353ffcdb7ce782bf2f8fb23184a7db)
+        ;
+
+        
+    
+    
+            var marker_a3aae8b32d2040be1819147019b7183f = L.marker(
+                [16.718891, 95.148956],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_406b54ee03fc1b6bd8cb7580c4a2a5aa = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "beige",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_888bb302478387a331eb7b61c7608917 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1a40f81ded2ec6b8f667188fc710d1b3 = $(`<div id="html_1a40f81ded2ec6b8f667188fc710d1b3" style="width: 100.0%; height: 100.0%;">                 <b>456656</b><br>                 <b>Cluster:</b> 13<br>                 <b>Distance from office:</b> 27.23 km             </div>`)[0];
+                popup_888bb302478387a331eb7b61c7608917.setContent(html_1a40f81ded2ec6b8f667188fc710d1b3);
+            
+        
+
+        marker_a3aae8b32d2040be1819147019b7183f.bindPopup(popup_888bb302478387a331eb7b61c7608917)
+        ;
+
+        
+    
+    
+            marker_a3aae8b32d2040be1819147019b7183f.bindTooltip(
+                `<div>
+                     Cluster 13: 456656
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a3aae8b32d2040be1819147019b7183f.setIcon(icon_406b54ee03fc1b6bd8cb7580c4a2a5aa);
+            
+    
+            var marker_fe74dc1777a0d9bf68fd7f4872d15373 = L.marker(
+                [16.714506, 95.147491],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f3875454e3c369c9cc9f64cc406667ea = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "beige",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3e9881debfc29a3d25ba36387b78c715 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_47bcc3851b214d720aad5cccb6b1ca6b = $(`<div id="html_47bcc3851b214d720aad5cccb6b1ca6b" style="width: 100.0%; height: 100.0%;">                 <b>456786</b><br>                 <b>Cluster:</b> 13<br>                 <b>Distance from office:</b> 26.71 km             </div>`)[0];
+                popup_3e9881debfc29a3d25ba36387b78c715.setContent(html_47bcc3851b214d720aad5cccb6b1ca6b);
+            
+        
+
+        marker_fe74dc1777a0d9bf68fd7f4872d15373.bindPopup(popup_3e9881debfc29a3d25ba36387b78c715)
+        ;
+
+        
+    
+    
+            marker_fe74dc1777a0d9bf68fd7f4872d15373.bindTooltip(
+                `<div>
+                     Cluster 13: 456786
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fe74dc1777a0d9bf68fd7f4872d15373.setIcon(icon_f3875454e3c369c9cc9f64cc406667ea);
+            
+    
+            var marker_f2b70f7b6470dca9900c3b16c0d667d3 = L.marker(
+                [16.71158, 95.134491],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_49a9e003833540abd0c0cc7d9f7f06e1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "beige",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c0aec3bb86843ae10ecaf69ed5565ad9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ced53f48537bf5e60bb5e1ac7ab8a496 = $(`<div id="html_ced53f48537bf5e60bb5e1ac7ab8a496" style="width: 100.0%; height: 100.0%;">                 <b>489390</b><br>                 <b>Cluster:</b> 13<br>                 <b>Distance from office:</b> 26.06 km             </div>`)[0];
+                popup_c0aec3bb86843ae10ecaf69ed5565ad9.setContent(html_ced53f48537bf5e60bb5e1ac7ab8a496);
+            
+        
+
+        marker_f2b70f7b6470dca9900c3b16c0d667d3.bindPopup(popup_c0aec3bb86843ae10ecaf69ed5565ad9)
+        ;
+
+        
+    
+    
+            marker_f2b70f7b6470dca9900c3b16c0d667d3.bindTooltip(
+                `<div>
+                     Cluster 13: 489390
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f2b70f7b6470dca9900c3b16c0d667d3.setIcon(icon_49a9e003833540abd0c0cc7d9f7f06e1);
+            
+    
+            var marker_d3daa7834b11132d6bb384558d113c86 = L.marker(
+                [16.71147, 95.118263],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_ddcb7ffa20e36e3f19a02cd3791ff3fc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "salmon",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_98cbce91243d1f5aa52ea06422365105 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2d922dd4dd7b5b1415d88f1765ae0a8d = $(`<div id="html_2d922dd4dd7b5b1415d88f1765ae0a8d" style="width: 100.0%; height: 100.0%;">                 <b>494760</b><br>                 <b>Cluster:</b> 14<br>                 <b>Distance from office:</b> 26.03 km             </div>`)[0];
+                popup_98cbce91243d1f5aa52ea06422365105.setContent(html_2d922dd4dd7b5b1415d88f1765ae0a8d);
+            
+        
+
+        marker_d3daa7834b11132d6bb384558d113c86.bindPopup(popup_98cbce91243d1f5aa52ea06422365105)
+        ;
+
+        
+    
+    
+            marker_d3daa7834b11132d6bb384558d113c86.bindTooltip(
+                `<div>
+                     Cluster 14: 494760
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d3daa7834b11132d6bb384558d113c86.setIcon(icon_ddcb7ffa20e36e3f19a02cd3791ff3fc);
+            
+    
+            var marker_60be20317481c70264d168f241c020a2 = L.marker(
+                [16.70854, 95.109688],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_ff6a1834bdb14494340476cf9412b18d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "salmon",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d5ba4fc0cc232925a2a34e2d87e031f3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fb2a0ac4483e179fe2005bb02f603d98 = $(`<div id="html_fb2a0ac4483e179fe2005bb02f603d98" style="width: 100.0%; height: 100.0%;">                 <b>589026</b><br>                 <b>Cluster:</b> 14<br>                 <b>Distance from office:</b> 27.37 km             </div>`)[0];
+                popup_d5ba4fc0cc232925a2a34e2d87e031f3.setContent(html_fb2a0ac4483e179fe2005bb02f603d98);
+            
+        
+
+        marker_60be20317481c70264d168f241c020a2.bindPopup(popup_d5ba4fc0cc232925a2a34e2d87e031f3)
+        ;
+
+        
+    
+    
+            marker_60be20317481c70264d168f241c020a2.bindTooltip(
+                `<div>
+                     Cluster 14: 589026
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_60be20317481c70264d168f241c020a2.setIcon(icon_ff6a1834bdb14494340476cf9412b18d);
+            
+    
+            var marker_bb089d17ef9bf83c560fd6c8796901cb = L.marker(
+                [16.706377, 95.097496],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_43ba0d9a937c11d3f3c3f28d1693c07f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "cyan",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dbbe866492e8acb80976f5a33ae4085e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b65fd7edc65f4ae399d5db8be1c8aa13 = $(`<div id="html_b65fd7edc65f4ae399d5db8be1c8aa13" style="width: 100.0%; height: 100.0%;">                 <b>456442</b><br>                 <b>Cluster:</b> 15<br>                 <b>Distance from office:</b> 28.76 km             </div>`)[0];
+                popup_dbbe866492e8acb80976f5a33ae4085e.setContent(html_b65fd7edc65f4ae399d5db8be1c8aa13);
+            
+        
+
+        marker_bb089d17ef9bf83c560fd6c8796901cb.bindPopup(popup_dbbe866492e8acb80976f5a33ae4085e)
+        ;
+
+        
+    
+    
+            marker_bb089d17ef9bf83c560fd6c8796901cb.bindTooltip(
+                `<div>
+                     Cluster 15: 456442
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bb089d17ef9bf83c560fd6c8796901cb.setIcon(icon_43ba0d9a937c11d3f3c3f28d1693c07f);
+            
+    
+            var marker_f1852b195ad0ea42f6d5560e8266b0fd = L.marker(
+                [16.7029, 95.100388],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_c8cca97c869c38f7df91ca12674fa1a9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "cyan",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_732fa62dbe343a7530cd38f85a56e476 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1aa36bd29ce553ef677e5d888d3f4597 = $(`<div id="html_1aa36bd29ce553ef677e5d888d3f4597" style="width: 100.0%; height: 100.0%;">                 <b>456444</b><br>                 <b>Cluster:</b> 15<br>                 <b>Distance from office:</b> 28.36 km             </div>`)[0];
+                popup_732fa62dbe343a7530cd38f85a56e476.setContent(html_1aa36bd29ce553ef677e5d888d3f4597);
+            
+        
+
+        marker_f1852b195ad0ea42f6d5560e8266b0fd.bindPopup(popup_732fa62dbe343a7530cd38f85a56e476)
+        ;
+
+        
+    
+    
+            marker_f1852b195ad0ea42f6d5560e8266b0fd.bindTooltip(
+                `<div>
+                     Cluster 15: 456444
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f1852b195ad0ea42f6d5560e8266b0fd.setIcon(icon_c8cca97c869c38f7df91ca12674fa1a9);
+            
+    
+            var marker_e78cf3b029b765206f93abfe8e20b81e = L.marker(
+                [16.75032, 95.089272],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_a50c5ccb052240a855ab3fbed482c1c9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7bd90dbda8313380f18dedfadb5e1f41 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_be86585e4db0a564b8b6c6e63d65e1e1 = $(`<div id="html_be86585e4db0a564b8b6c6e63d65e1e1" style="width: 100.0%; height: 100.0%;">                 <b>437425</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 21.87 km             </div>`)[0];
+                popup_7bd90dbda8313380f18dedfadb5e1f41.setContent(html_be86585e4db0a564b8b6c6e63d65e1e1);
+            
+        
+
+        marker_e78cf3b029b765206f93abfe8e20b81e.bindPopup(popup_7bd90dbda8313380f18dedfadb5e1f41)
+        ;
+
+        
+    
+    
+            marker_e78cf3b029b765206f93abfe8e20b81e.bindTooltip(
+                `<div>
+                     OUTLIER: 437425
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e78cf3b029b765206f93abfe8e20b81e.setIcon(icon_a50c5ccb052240a855ab3fbed482c1c9);
+            
+    
+            var marker_85666befae317afb046486048a12539b = L.marker(
+                [16.669724, 95.147591],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_c69450b06fa1275a25fab81dbb21e857 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_641915c0e863f3c53425a1e852350b1b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_26910c2f0f0998c75f1fb81daf828ee7 = $(`<div id="html_26910c2f0f0998c75f1fb81daf828ee7" style="width: 100.0%; height: 100.0%;">                 <b>439242</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 31.36 km             </div>`)[0];
+                popup_641915c0e863f3c53425a1e852350b1b.setContent(html_26910c2f0f0998c75f1fb81daf828ee7);
+            
+        
+
+        marker_85666befae317afb046486048a12539b.bindPopup(popup_641915c0e863f3c53425a1e852350b1b)
+        ;
+
+        
+    
+    
+            marker_85666befae317afb046486048a12539b.bindTooltip(
+                `<div>
+                     OUTLIER: 439242
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_85666befae317afb046486048a12539b.setIcon(icon_c69450b06fa1275a25fab81dbb21e857);
+            
+    
+            var marker_b5bf0e813fc298df8b04e824744b3dc0 = L.marker(
+                [16.81354, 95.099503],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_f2e375f50002ea5808abf39e2df93192 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_eff7bbb796a0ca4295749d61dc4a9e23 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a6dca08b22199acd4ae834bc31e608cc = $(`<div id="html_a6dca08b22199acd4ae834bc31e608cc" style="width: 100.0%; height: 100.0%;">                 <b>444466</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 16.34 km             </div>`)[0];
+                popup_eff7bbb796a0ca4295749d61dc4a9e23.setContent(html_a6dca08b22199acd4ae834bc31e608cc);
+            
+        
+
+        marker_b5bf0e813fc298df8b04e824744b3dc0.bindPopup(popup_eff7bbb796a0ca4295749d61dc4a9e23)
+        ;
+
+        
+    
+    
+            marker_b5bf0e813fc298df8b04e824744b3dc0.bindTooltip(
+                `<div>
+                     OUTLIER: 444466
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b5bf0e813fc298df8b04e824744b3dc0.setIcon(icon_f2e375f50002ea5808abf39e2df93192);
+            
+    
+            var marker_906c0668ea1f41f43d4e1946408fc60a = L.marker(
+                [16.663, 95.026733],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_3694e1449ee481a0359e8fca2960562f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_45fd762eafd58a0f1b2322a34aac0118 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f325584dee9c4ba0fff923449238023f = $(`<div id="html_f325584dee9c4ba0fff923449238023f" style="width: 100.0%; height: 100.0%;">                 <b>445029</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 37.60 km             </div>`)[0];
+                popup_45fd762eafd58a0f1b2322a34aac0118.setContent(html_f325584dee9c4ba0fff923449238023f);
+            
+        
+
+        marker_906c0668ea1f41f43d4e1946408fc60a.bindPopup(popup_45fd762eafd58a0f1b2322a34aac0118)
+        ;
+
+        
+    
+    
+            marker_906c0668ea1f41f43d4e1946408fc60a.bindTooltip(
+                `<div>
+                     OUTLIER: 445029
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_906c0668ea1f41f43d4e1946408fc60a.setIcon(icon_3694e1449ee481a0359e8fca2960562f);
+            
+    
+            var marker_3fe54a3117f41489eb8983518db56d1b = L.marker(
+                [16.730418, 95.141624],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_c7caa837003d79a061fc74236385641b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c3f6bc204fc61425167b61377e05ba99 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8fdb5ff3760a691db21e1191aaa1851e = $(`<div id="html_8fdb5ff3760a691db21e1191aaa1851e" style="width: 100.0%; height: 100.0%;">                 <b>455157</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 26.38 km             </div>`)[0];
+                popup_c3f6bc204fc61425167b61377e05ba99.setContent(html_8fdb5ff3760a691db21e1191aaa1851e);
+            
+        
+
+        marker_3fe54a3117f41489eb8983518db56d1b.bindPopup(popup_c3f6bc204fc61425167b61377e05ba99)
+        ;
+
+        
+    
+    
+            marker_3fe54a3117f41489eb8983518db56d1b.bindTooltip(
+                `<div>
+                     OUTLIER: 455157
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3fe54a3117f41489eb8983518db56d1b.setIcon(icon_c7caa837003d79a061fc74236385641b);
+            
+    
+            var marker_6be6cecc88387d91f9861dbe38d25963 = L.marker(
+                [16.788314, 95.191072],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_a269d236594e8071ad08e1efa806c803 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a3bf39cc32f65adec540c790805fc12b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a7bdcdc454cb4b16b931f495f7d6d26a = $(`<div id="html_a7bdcdc454cb4b16b931f495f7d6d26a" style="width: 100.0%; height: 100.0%;">                 <b>456249</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 19.01 km             </div>`)[0];
+                popup_a3bf39cc32f65adec540c790805fc12b.setContent(html_a7bdcdc454cb4b16b931f495f7d6d26a);
+            
+        
+
+        marker_6be6cecc88387d91f9861dbe38d25963.bindPopup(popup_a3bf39cc32f65adec540c790805fc12b)
+        ;
+
+        
+    
+    
+            marker_6be6cecc88387d91f9861dbe38d25963.bindTooltip(
+                `<div>
+                     OUTLIER: 456249
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6be6cecc88387d91f9861dbe38d25963.setIcon(icon_a269d236594e8071ad08e1efa806c803);
+            
+    
+            var marker_82f392d355e4c955ee55ad47e9d259cb = L.marker(
+                [16.738482, 95.118317],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_0d1c82cc8397151af60af7a191c79b75 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4d6fb59fe6ca1beaaf92c85c443e677e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_29796fd56989e29474fc3fab17f19527 = $(`<div id="html_29796fd56989e29474fc3fab17f19527" style="width: 100.0%; height: 100.0%;">                 <b>477702</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 21.11 km             </div>`)[0];
+                popup_4d6fb59fe6ca1beaaf92c85c443e677e.setContent(html_29796fd56989e29474fc3fab17f19527);
+            
+        
+
+        marker_82f392d355e4c955ee55ad47e9d259cb.bindPopup(popup_4d6fb59fe6ca1beaaf92c85c443e677e)
+        ;
+
+        
+    
+    
+            marker_82f392d355e4c955ee55ad47e9d259cb.bindTooltip(
+                `<div>
+                     OUTLIER: 477702
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_82f392d355e4c955ee55ad47e9d259cb.setIcon(icon_0d1c82cc8397151af60af7a191c79b75);
+            
+    
+            var marker_dbe7df38567d605daf1dc6d2ba9f89b8 = L.marker(
+                [16.785649, 95.163261],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_4fd74eff5f1c8b6c84638729816627c6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5882f9f81f1a938835536e4da0ff9b0b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_78c5ec7020e4917bb71b57d9d8767b69 = $(`<div id="html_78c5ec7020e4917bb71b57d9d8767b69" style="width: 100.0%; height: 100.0%;">                 <b>485337</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 15.25 km             </div>`)[0];
+                popup_5882f9f81f1a938835536e4da0ff9b0b.setContent(html_78c5ec7020e4917bb71b57d9d8767b69);
+            
+        
+
+        marker_dbe7df38567d605daf1dc6d2ba9f89b8.bindPopup(popup_5882f9f81f1a938835536e4da0ff9b0b)
+        ;
+
+        
+    
+    
+            marker_dbe7df38567d605daf1dc6d2ba9f89b8.bindTooltip(
+                `<div>
+                     OUTLIER: 485337
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_dbe7df38567d605daf1dc6d2ba9f89b8.setIcon(icon_4fd74eff5f1c8b6c84638729816627c6);
+            
+    
+            var marker_091e69319f2f4b6af2d431c672be316b = L.marker(
+                [16.60882, 95.071983],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_cb946a9499721491777ea7d5b386346b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_de7db269eff8c5f845820c8d6f33f2aa = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c5ffaa430fccdd0d44be58dc6cea5ab3 = $(`<div id="html_c5ffaa430fccdd0d44be58dc6cea5ab3" style="width: 100.0%; height: 100.0%;">                 <b>493149</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 50.41 km             </div>`)[0];
+                popup_de7db269eff8c5f845820c8d6f33f2aa.setContent(html_c5ffaa430fccdd0d44be58dc6cea5ab3);
+            
+        
+
+        marker_091e69319f2f4b6af2d431c672be316b.bindPopup(popup_de7db269eff8c5f845820c8d6f33f2aa)
+        ;
+
+        
+    
+    
+            marker_091e69319f2f4b6af2d431c672be316b.bindTooltip(
+                `<div>
+                     OUTLIER: 493149
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_091e69319f2f4b6af2d431c672be316b.setIcon(icon_cb946a9499721491777ea7d5b386346b);
+            
+    
+            var marker_0a007224f240ee457b33f1ef8127e63c = L.marker(
+                [16.91437, 95.151047],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_526440e416d5aea51142d970d3ba00b4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ee23169bc4cb1882d0c431492c14f60b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_42174bd63994effb1c36e74716e6f248 = $(`<div id="html_42174bd63994effb1c36e74716e6f248" style="width: 100.0%; height: 100.0%;">                 <b>505147</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 4.03 km             </div>`)[0];
+                popup_ee23169bc4cb1882d0c431492c14f60b.setContent(html_42174bd63994effb1c36e74716e6f248);
+            
+        
+
+        marker_0a007224f240ee457b33f1ef8127e63c.bindPopup(popup_ee23169bc4cb1882d0c431492c14f60b)
+        ;
+
+        
+    
+    
+            marker_0a007224f240ee457b33f1ef8127e63c.bindTooltip(
+                `<div>
+                     OUTLIER: 505147
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0a007224f240ee457b33f1ef8127e63c.setIcon(icon_526440e416d5aea51142d970d3ba00b4);
+            
+    
+            var marker_73964936c5fe8f8e4ef9a79df35004b8 = L.marker(
+                [16.820721, 95.092079],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_a7332a340ad874aa36ba02c2dcd84520 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_28602edcb7ad4bd9d66ef87cd48e7428 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_26442fe05ee23ff7d8cb6629fb30f964 = $(`<div id="html_26442fe05ee23ff7d8cb6629fb30f964" style="width: 100.0%; height: 100.0%;">                 <b>534689</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 16.88 km             </div>`)[0];
+                popup_28602edcb7ad4bd9d66ef87cd48e7428.setContent(html_26442fe05ee23ff7d8cb6629fb30f964);
+            
+        
+
+        marker_73964936c5fe8f8e4ef9a79df35004b8.bindPopup(popup_28602edcb7ad4bd9d66ef87cd48e7428)
+        ;
+
+        
+    
+    
+            marker_73964936c5fe8f8e4ef9a79df35004b8.bindTooltip(
+                `<div>
+                     OUTLIER: 534689
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_73964936c5fe8f8e4ef9a79df35004b8.setIcon(icon_a7332a340ad874aa36ba02c2dcd84520);
+            
+    
+            var marker_01cdac2912e8d7a2407caf19acb07d46 = L.marker(
+                [16.647852, 95.002136],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_75f8c7d2a750037d3d7f688a82e0e5b1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_28dfe746f8e3c33c576d75e3c874a472 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_31434afc1877fac8885583d77c2d133b = $(`<div id="html_31434afc1877fac8885583d77c2d133b" style="width: 100.0%; height: 100.0%;">                 <b>543153</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 45.72 km             </div>`)[0];
+                popup_28dfe746f8e3c33c576d75e3c874a472.setContent(html_31434afc1877fac8885583d77c2d133b);
+            
+        
+
+        marker_01cdac2912e8d7a2407caf19acb07d46.bindPopup(popup_28dfe746f8e3c33c576d75e3c874a472)
+        ;
+
+        
+    
+    
+            marker_01cdac2912e8d7a2407caf19acb07d46.bindTooltip(
+                `<div>
+                     OUTLIER: 543153
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_01cdac2912e8d7a2407caf19acb07d46.setIcon(icon_75f8c7d2a750037d3d7f688a82e0e5b1);
+            
+    
+            var marker_fb6a0d8d56a90b11b07e99adc263ca23 = L.marker(
+                [16.730403, 95.134239],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_1475665bef2dbad04e37b2c53ed89313 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4dd6f7b6d6bd6cd339b3372bce0b07ee = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6178b6f7d949b0ad713f07fee5eae111 = $(`<div id="html_6178b6f7d949b0ad713f07fee5eae111" style="width: 100.0%; height: 100.0%;">                 <b>550906</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 24.07 km             </div>`)[0];
+                popup_4dd6f7b6d6bd6cd339b3372bce0b07ee.setContent(html_6178b6f7d949b0ad713f07fee5eae111);
+            
+        
+
+        marker_fb6a0d8d56a90b11b07e99adc263ca23.bindPopup(popup_4dd6f7b6d6bd6cd339b3372bce0b07ee)
+        ;
+
+        
+    
+    
+            marker_fb6a0d8d56a90b11b07e99adc263ca23.bindTooltip(
+                `<div>
+                     OUTLIER: 550906
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fb6a0d8d56a90b11b07e99adc263ca23.setIcon(icon_1475665bef2dbad04e37b2c53ed89313);
+            
+    
+            var marker_e63992b56b1f848eeadf48f7eb719350 = L.marker(
+                [16.587351, 95.186028],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_393412fe4721c915b879c5424694d54d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1498bd12d7440deaa0529f199a7b613d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_235b03196bcc92f65d1e39097cb8e13b = $(`<div id="html_235b03196bcc92f65d1e39097cb8e13b" style="width: 100.0%; height: 100.0%;">                 <b>569518</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 49.53 km             </div>`)[0];
+                popup_1498bd12d7440deaa0529f199a7b613d.setContent(html_235b03196bcc92f65d1e39097cb8e13b);
+            
+        
+
+        marker_e63992b56b1f848eeadf48f7eb719350.bindPopup(popup_1498bd12d7440deaa0529f199a7b613d)
+        ;
+
+        
+    
+    
+            marker_e63992b56b1f848eeadf48f7eb719350.bindTooltip(
+                `<div>
+                     OUTLIER: 569518
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e63992b56b1f848eeadf48f7eb719350.setIcon(icon_393412fe4721c915b879c5424694d54d);
+            
+    
+            var marker_2697694680d99db4db14e15dcd5c0d88 = L.marker(
+                [16.718611, 95.127251],
+                {
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+    
+            var icon_ecd378422c63f8fd5d47d70aa4f8faa1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "question",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_75892f65eea867ddb6c2b9e0005027db = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_87807eb4e487fdf5f0734ae381a4a8ae = $(`<div id="html_87807eb4e487fdf5f0734ae381a4a8ae" style="width: 100.0%; height: 100.0%;">                 <b>589200</b><br>                 <b>Status:</b> OUTLIER<br>                 <b>Distance from office:</b> 24.41 km             </div>`)[0];
+                popup_75892f65eea867ddb6c2b9e0005027db.setContent(html_87807eb4e487fdf5f0734ae381a4a8ae);
+            
+        
+
+        marker_2697694680d99db4db14e15dcd5c0d88.bindPopup(popup_75892f65eea867ddb6c2b9e0005027db)
+        ;
+
+        
+    
+    
+            marker_2697694680d99db4db14e15dcd5c0d88.bindTooltip(
+                `<div>
+                     OUTLIER: 589200
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_2697694680d99db4db14e15dcd5c0d88.setIcon(icon_ecd378422c63f8fd5d47d70aa4f8faa1);
+            
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_b9d61c01b2371245f483972c0c235a5e);
+        
+</script>
+</html>
