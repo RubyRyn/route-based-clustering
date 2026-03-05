@@ -11,12 +11,16 @@ class DistanceMatrixGenerator:
     """Generate Euclidean and road distance matrices"""
     
     def __init__(self, random_seed: int = 42, api_type: str = 'osrm_demo', 
-                 use_fallback: bool = True):
+             use_fallback: bool = True, due_date: str = None,
+             server_ip: str = 'localhost', port: int = 5000):
         """
         Args:
             random_seed: Random seed for reproducibility
-            api_type: Which routing API to use
+            api_type: Which routing API to use ('osrm_demo' or 'osrm_local')
             use_fallback: If True, fall back to approximation if API fails
+            due_date: Due date string for file naming
+            server_ip: IP address for local OSRM server
+            port: Port for local OSRM server
         """
         self.use_fallback = use_fallback
         np.random.seed(random_seed)
@@ -24,7 +28,12 @@ class DistanceMatrixGenerator:
         self.locations: List[Location] = []
         self.euclidean_matrix: np.ndarray = None
         self.road_matrix: np.ndarray = None
-        self.road_calculator = RoadDistanceCalculator(api_type=api_type)
+        self.road_calculator = RoadDistanceCalculator(
+            api_type=api_type,
+            server_ip=server_ip,
+            port=port
+        )
+        self.due_date = due_date
     
     def load_locations_from_csv(self, csv_file: str, 
                                 lat_col: str = 'Latitude', 
@@ -110,11 +119,40 @@ class DistanceMatrixGenerator:
         self.road_matrix = road_matrix
         
         return euclidean_matrix, road_matrix
-    
+
+    def generate_distance_matrices_tableAPI(self) -> Tuple[np.ndarray, np.ndarray]:
+        """Generate distance matrices using Table API (much faster)"""
+        if not self.locations:
+            raise RuntimeError("No locations loaded. Call load_locations_from_csv first.")
+        
+        n = len(self.locations)
+        
+        # Euclidean matrix
+        print(f"\nCalculating Euclidean distances for {n} locations...")
+        euclidean_matrix = np.zeros((n, n))
+        for i in range(n):
+            for j in range(i + 1, n):
+                dist = self.calculate_euclidean_distance(self.locations[i], self.locations[j])
+                euclidean_matrix[i, j] = dist
+                euclidean_matrix[j, i] = dist
+        
+        # Road matrix using Table API
+        print(f"\nFetching road distances using Table API...")
+        road_matrix = self.road_calculator.get_distance_matrix_table(
+            self.locations, 
+            batch_size=100
+        )
+        
+        self.euclidean_matrix = euclidean_matrix
+        self.road_matrix = road_matrix
+        
+        return euclidean_matrix, road_matrix
+
+
     def get_location_names(self) -> List[str]:
         """Get list of location names"""
         return [loc.name for loc in self.locations]
-    
+
 
     def export_to_json(self, filename: str = 'delivery_data.json'):
         """Export all data to JSON"""
@@ -132,8 +170,11 @@ class DistanceMatrixGenerator:
             json.dump(data, f, indent=2)
         print(f"Exported to {filename}")
     
-    def export_to_csv(self, filename: str = 'distance_matrix.csv'):
+    def export_to_csv(self, filename: str = None):
         """Export matrices to CSV"""
+        if filename is None:
+            filename = f'distance_matrices_{self.due_date}.csv'
+
         names = self.get_location_names()
         df_euc = pd.DataFrame(self.euclidean_matrix, index=names, columns=names)
         df_road = pd.DataFrame(self.road_matrix, index=names, columns=names)

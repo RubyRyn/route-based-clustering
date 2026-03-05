@@ -1,175 +1,203 @@
 """
-HDBSCAN Clustering based on Road Distance Matrix (Simple Version)
-
-Density-based clustering that:
-- Automatically finds the number of clusters
-- Uses road distance matrix (handles rivers, mountains, etc.)
-- Identifies outliers (isolated clients)
+Test OSRM Table API + Route Geometry Visualization
 """
 
+import requests
 import numpy as np
-from typing import List
-from sklearn.cluster import HDBSCAN
-from location import Location
+import folium
+from folium import plugins
+
+# Your server
+SERVER_IP = "91.99.169.156"
+PORT = 5000
+BASE_URL = f"http://{SERVER_IP}:{PORT}"
+
+# Test locations (name, lat, lon)
+locations = [
+    ("Client A", 16.76033,95.227028),
+    ("Client B", 16.529137,95.266893),
+    ("Client C", 16.77478,95.293839),
+]
+
+def test_table_api():
+    """Test Table API for distance matrix"""
+    print("=" * 60)
+    print("TEST 1: Table API (Distance Matrix)")
+    print("=" * 60)
+    
+    # Build coordinates string: lon,lat;lon,lat;...
+    coords = ";".join([f"{lon},{lat}" for name, lat, lon in locations])
+    
+    url = f"{BASE_URL}/table/v1/driving/{coords}?annotations=distance"
+    print(f"URL: {url}\n")
+    
+    response = requests.get(url, timeout=30)
+    data = response.json()
+    
+    if data['code'] == 'Ok':
+        # Convert to km
+        distances = np.array(data['distances']) / 1000.0
+        
+        print("Distance Matrix (km):")
+        print("-" * 60)
+        
+        # Header
+        print(f"{'':>12}", end="")
+        for name, _, _ in locations:
+            print(f"{name:>12}", end="")
+        print()
+        
+        # Rows
+        for i, (name, _, _) in enumerate(locations):
+            print(f"{name:>12}", end="")
+            for j in range(len(locations)):
+                print(f"{distances[i][j]:>12.2f}", end="")
+            print()
+        
+        return distances
+    else:
+        print(f"Error: {data}")
+        return None
 
 
-class HDBSCANClusteringSimple:
+def get_route_geometry(origin, destination):
     """
-    Simple HDBSCAN clustering using road distance matrix.
+    Get route geometry between two points.
     
-    Automatically determines the number of clusters based on data density.
-    Outliers (isolated clients) are labeled as -1.
+    Args:
+        origin: (name, lat, lon)
+        destination: (name, lat, lon)
+    
+    Returns:
+        List of [lat, lon] points for the route
     """
+    origin_name, origin_lat, origin_lon = origin
+    dest_name, dest_lat, dest_lon = destination
     
-    def __init__(self, road_matrix: np.ndarray, locations: List[Location],
-                 min_cluster_size: int = 2, min_samples: int = 1):
-        """
-        Args:
-            road_matrix: Full distance matrix (office + clients) in km
-            locations: List of Location objects (office first, then clients)
-            min_cluster_size: Minimum number of clients to form a cluster (default: 2)
-            min_samples: How conservative clustering is. Higher = more outliers (default: 1)
-        """
-        self.road_matrix = road_matrix
-        self.locations = locations
-        self.min_cluster_size = min_cluster_size
-        self.min_samples = min_samples
-        
-        self.num_locations = len(locations)
-        self.num_clients = self.num_locations - 1
-        
-        # Client-only road distance matrix (exclude office)
-        self.client_road_matrix = road_matrix[1:, 1:]
-        
-        # Results
-        self.labels = None
-        self.n_clusters = None
-        self.n_outliers = None
-        self.probabilities = None
-        self.clusterer = None
+    url = f"{BASE_URL}/route/v1/driving/{origin_lon},{origin_lat};{dest_lon},{dest_lat}"
+    params = {
+        'overview': 'full',
+        'geometries': 'geojson'
+    }
     
-    def cluster(self) -> np.ndarray:
-        """
-        Cluster clients using HDBSCAN on road distances.
-        
-        Returns:
-            Array of cluster labels for each client (-1 = outlier)
-        """
-        print(f"\n{'='*70}")
-        print(f"HDBSCAN CLUSTERING (Road Distance Matrix)")
-        print(f"{'='*70}")
-        print(f"Clients: {self.num_clients}")
-        print(f"Min cluster size: {self.min_cluster_size}")
-        print(f"Min samples: {self.min_samples}")
-        
-        # Make matrix symmetric
-        symmetric_matrix = (self.client_road_matrix + self.client_road_matrix.T) / 2
-        np.fill_diagonal(symmetric_matrix, 0)
-        
-        # Run HDBSCAN
-        self.clusterer = HDBSCAN(
-            min_cluster_size=self.min_cluster_size,
-            min_samples=self.min_samples,
-            metric='precomputed'
-        )
-        
-        self.labels = self.clusterer.fit_predict(symmetric_matrix)
-        self.probabilities = self.clusterer.probabilities_
-        
-        # Count clusters and outliers
-        unique_labels = np.unique(self.labels)
-        self.n_clusters = len(unique_labels[unique_labels >= 0])
-        self.n_outliers = np.sum(self.labels == -1)
-        
-        print(f"\nClustering complete!")
-        print(f"Clusters found: {self.n_clusters}")
-        print(f"Outliers: {self.n_outliers}")
-        
-        self._print_cluster_stats()
-        
-        return self.labels
+    response = requests.get(url, params=params, timeout=30)
+    data = response.json()
     
-    def _print_cluster_stats(self):
-        """Print statistics for each cluster."""
-        print(f"\n{'-'*70}")
-        print(f"CLUSTER STATISTICS")
-        print(f"{'-'*70}")
+    if data['code'] == 'Ok' and len(data['routes']) > 0:
+        # Extract geometry (OSRM returns [lon, lat], we need [lat, lon] for folium)
+        geometry_coords = data['routes'][0]['geometry']['coordinates']
+        route_points = [[lat, lon] for lon, lat in geometry_coords]
         
-        clients = self.locations[1:]
+        distance_km = data['routes'][0]['distance'] / 1000.0
+        duration_min = data['routes'][0]['duration'] / 60.0
         
-        # Print outliers first
-        if self.n_outliers > 0:
-            outlier_indices = np.where(self.labels == -1)[0]
+        return route_points, distance_km, duration_min
+    else:
+        print(f"Error getting route: {data.get('code', 'Unknown')}")
+        return None, None, None
+
+
+def test_route_geometry():
+    """Test Route API for geometry"""
+    print("\n" + "=" * 60)
+    print("TEST 2: Route API (Geometry)")
+    print("=" * 60)
+    
+    origin = locations[0]  # Office
+    destination = locations[1]  # Client A
+    
+    route_points, distance, duration = get_route_geometry(origin, destination)
+    
+    if route_points:
+        print(f"Route: {origin[0]} → {destination[0]}")
+        print(f"Distance: {distance:.2f} km")
+        print(f"Duration: {duration:.1f} minutes")
+        print(f"Route points: {len(route_points)} coordinates")
+        return True
+    return False
+
+
+def visualize_routes():
+    """Visualize all routes on a map"""
+    print("\n" + "=" * 60)
+    print("TEST 3: Visualize Routes on Map")
+    print("=" * 60)
+    
+    # Create map centered on locations
+    center_lat = np.mean([lat for _, lat, _ in locations])
+    center_lon = np.mean([lon for _, _, lon in locations])
+    
+    m = folium.Map(
+        location=[center_lat, center_lon],
+        zoom_start=10,
+        tiles='OpenStreetMap'
+    )
+    
+    # Colors for routes
+    colors = ['blue', 'green', 'orange', 'purple', 'red']
+    
+    # Add markers for all locations
+    for i, (name, lat, lon) in enumerate(locations):
+        if i == 0:
+            # Office marker
+            folium.Marker(
+                location=[lat, lon],
+                popup=f"<b>{name}</b><br>Office",
+                tooltip=name,
+                icon=folium.Icon(color='red', icon='building', prefix='fa')
+            ).add_to(m)
+        else:
+            # Client marker
+            folium.Marker(
+                location=[lat, lon],
+                popup=f"<b>{name}</b>",
+                tooltip=name,
+                icon=folium.Icon(color='blue', icon='home', prefix='fa')
+            ).add_to(m)
+    
+    # Draw routes from Office to each client
+    office = locations[0]
+    
+    for i, client in enumerate(locations[1:]):
+        route_points, distance, duration = get_route_geometry(office, client)
+        
+        if route_points:
+            color = colors[i % len(colors)]
             
-            print(f"\nOUTLIERS ({self.n_outliers} clients):")
-            for idx in outlier_indices:
-                client = clients[idx]
-                office_dist = self.road_matrix[0, idx + 1]
-                print(f"  - {client.name} ({office_dist:.2f} km from office)")
-        
-        # Print each cluster
-        for cluster_id in range(self.n_clusters):
-            cluster_mask = self.labels == cluster_id
-            cluster_indices = np.where(cluster_mask)[0]
-            cluster_size = len(cluster_indices)
+            folium.PolyLine(
+                locations=route_points,
+                color=color,
+                weight=4,
+                opacity=0.8,
+                popup=f"<b>{office[0]} → {client[0]}</b><br>"
+                      f"Distance: {distance:.2f} km<br>"
+                      f"Duration: {duration:.1f} min",
+                tooltip=f"{office[0]} → {client[0]}: {distance:.2f} km"
+            ).add_to(m)
             
-            # Calculate internal distances
-            if cluster_size > 1:
-                internal_dists = []
-                for i in cluster_indices:
-                    for j in cluster_indices:
-                        if i < j:
-                            internal_dists.append(self.client_road_matrix[i, j])
-                avg_internal = np.mean(internal_dists)
-                max_internal = np.max(internal_dists)
-            else:
-                avg_internal = 0
-                max_internal = 0
-            
-            # Distance from office
-            office_dists = [self.road_matrix[0, idx + 1] for idx in cluster_indices]
-            avg_office_dist = np.mean(office_dists)
-            
-            print(f"\nCluster {cluster_id + 1}:")
-            print(f"  Clients: {cluster_size}")
-            print(f"  Avg distance from office: {avg_office_dist:.2f} km")
-            print(f"  Avg internal distance: {avg_internal:.2f} km")
-            print(f"  Max internal distance: {max_internal:.2f} km")
-            
-            # List client names
-            client_names = [clients[idx].name for idx in cluster_indices]
-            if len(client_names) <= 5:
-                print(f"  Members: {', '.join(client_names)}")
-            else:
-                print(f"  Members: {', '.join(client_names[:5])} + {len(client_names) - 5} more")
+            print(f"  Route: {office[0]} → {client[0]}: {distance:.2f} km, {duration:.1f} min")
     
-    def get_labels(self) -> np.ndarray:
-        """Get cluster labels for each client (-1 = outlier)."""
-        return self.labels
+    # Add fullscreen button
+    plugins.Fullscreen().add_to(m)
     
-    def get_cluster_members(self, cluster_id: int) -> List[str]:
-        """Get list of client names in a cluster."""
-        clients = self.locations[1:]
-        cluster_indices = np.where(self.labels == cluster_id)[0]
-        return [clients[idx].name for idx in cluster_indices]
+    # Save map
+    output_file = "Output\\test_routes.html"
+    m.save(output_file)
+    print(f"\nMap saved to: {output_file}")
     
-    def get_outliers(self) -> List[str]:
-        """Get list of outlier client names."""
-        clients = self.locations[1:]
-        outlier_indices = np.where(self.labels == -1)[0]
-        return [clients[idx].name for idx in outlier_indices]
+    return m
+
+
+if __name__ == "__main__":
+    # Test 1: Table API
+    distances = test_table_api()
     
-    def get_cluster_assignments(self) -> dict:
-        """Get all cluster assignments as dictionary."""
-        assignments = {}
-        
-        # Add outliers
-        outliers = self.get_outliers()
-        if outliers:
-            assignments["Outliers"] = outliers
-        
-        # Add clusters
-        for cluster_id in range(self.n_clusters):
-            assignments[f"Cluster_{cluster_id + 1}"] = self.get_cluster_members(cluster_id)
-        
-        return assignments
+    # Test 2: Route Geometry
+    test_route_geometry()
+    
+    # Test 3: Visualize on Map
+    visualize_routes()
+    
+    print("\n" + "=" * 60)
+    print("ALL TESTS COMPLETE!")
+    print("=" * 60)

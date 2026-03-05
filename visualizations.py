@@ -52,10 +52,9 @@ def plot_road_distance_clusters(locations: List[Location],
     ).add_to(m)
     
     # Colors for clusters
-    colors = ['blue', 'green', 'orange', 'purple', 'darkred',
-              'darkblue', 'darkgreen', 'cadetblue', 'pink', 'black',
-              'lightgreen', 'lightblue', 'beige',
-              'salmon', 'cyan', 'magenta', 'lime', 'teal']
+    colors = [ 'darkpurple', 'lightblue', 'red', 'darkred', 'blue', 'lightgreen',
+               'gray', 'green', 'darkgreen', 'cadetblue', 'pink',  'orange',
+                'black', 'lightred', 'darkblue', 'purple']
     
     clients = locations[1:]
     
@@ -270,7 +269,7 @@ def plot_road_distance_clusters_static(locations: List[Location],
     
     plt.tight_layout()
     plt.savefig(f'Output\\{filename}', dpi=150, bbox_inches='tight')
-    plt.show()
+    # plt.show()
     print(f"Saved static plot to Output\\{filename}")
 
 
@@ -450,99 +449,158 @@ def plot_hdbscan_clusters(locations: List[Location],
     print(f"Saved HDBSCAN cluster map to Output\\{filename}")
 
 
-def plot_kmedoids_clusters(locations: List[Location], labels: np.ndarray,
-                           medoid_indices: np.ndarray, road_matrix: np.ndarray,
-                           filename: str = 'kmedoids_clusters.png'):
+def plot_kmedoids_clusters(locations: List[Location],
+                           labels: np.ndarray,
+                           medoid_indices: np.ndarray,
+                           road_matrix: np.ndarray,
+                           filename: str = None):
     """
-    Visualize K-Medoids++ clustering using MDS (Multidimensional Scaling).
-    Converts road distance matrix into 2D coordinates where visual distances
-    approximate actual road distances.
+    Visualize K-Medoids clusters on OpenStreetMap.
     
     Args:
         locations: List of Location objects (office first, then clients)
         labels: Cluster labels for each client
         medoid_indices: Indices of medoids (in client space, 0-indexed)
         road_matrix: Road distance matrix
-        filename: Output filename
+        filename: Output HTML filename
     """
-    from sklearn.manifold import MDS
+    from scipy.spatial import ConvexHull
     
-    # Use MDS to convert road distance matrix to 2D coordinates
-    # This makes visual distance ≈ road distance
-    mds = MDS(n_components=2, dissimilarity='precomputed', random_state=42, normalized_stress='auto')
-    coords_2d = mds.fit_transform(road_matrix)
+    # Create map centered on all locations
+    lats = [loc.lat for loc in locations]
+    lons = [loc.lon for loc in locations]
+    center_lat = np.mean(lats)
+    center_lon = np.mean(lons)
     
-    # Separate office and clients
-    office_coord = coords_2d[0]
-    client_coords = coords_2d[1:]
+    m = folium.Map(
+        location=[center_lat, center_lon],
+        zoom_start=12,
+        tiles='OpenStreetMap'
+    )
+    
+    # Office marker
+    office = locations[0]
+    folium.Marker(
+        location=[office.lat, office.lon],
+        popup=f"<b>{office.name}</b><br>Office",
+        tooltip="Office",
+        icon=folium.Icon(color='red', icon='building', prefix='fa')
+    ).add_to(m)
+    
+    # Colors for clusters
+    colors = ['blue', 'green', 'orange', 'purple', 'darkred',
+              'darkblue', 'darkgreen', 'cadetblue', 'pink', 'black',
+              'lightgreen', 'lightblue', 'beige', 'salmon', 'gray']
     
     clients = locations[1:]
     n_clusters = len(np.unique(labels))
-    colors = plt.cm.tab20(np.linspace(0, 1, max(n_clusters, 2)))
     
-    fig, ax = plt.subplots(figsize=(14, 10))
-    
-    # Plot office
-    ax.scatter(office_coord[0], office_coord[1], c='red', s=300, marker='s', 
-               label='Office', zorder=5, edgecolors='black', linewidths=2)
-    ax.annotate('Office', (office_coord[0], office_coord[1]), fontsize=9, 
-                xytext=(5, 5), textcoords='offset points', fontweight='bold')
-    
-    # Plot each cluster
+    # Draw each cluster
     for cluster_id in range(n_clusters):
         cluster_mask = labels == cluster_id
-        cluster_client_indices = np.where(cluster_mask)[0]
-        medoid_client_idx = medoid_indices[cluster_id]
+        cluster_indices = np.where(cluster_mask)[0]
+        color = colors[cluster_id % len(colors)]
+        medoid_idx = medoid_indices[cluster_id]
         
-        color = colors[cluster_id]
+        # Get cluster coordinates
+        cluster_coords = []
+        for idx in cluster_indices:
+            client = clients[idx]
+            cluster_coords.append([client.lat, client.lon])
         
-        # Get medoid coordinate
-        medoid_coord = client_coords[medoid_client_idx]
+        # Draw convex hull boundary (if 3+ points)
+        if len(cluster_coords) >= 3:
+            cluster_coords_arr = np.array(cluster_coords)
+            try:
+                hull = ConvexHull(cluster_coords_arr)
+                hull_points = cluster_coords_arr[hull.vertices].tolist()
+                hull_points.append(hull_points[0])  # Close polygon
+                
+                folium.Polygon(
+                    locations=hull_points,
+                    color=color,
+                    weight=3,
+                    fill=True,
+                    fill_color=color,
+                    fill_opacity=0.15,
+                    popup=f"Cluster {cluster_id + 1} ({len(cluster_indices)} clients)"
+                ).add_to(m)
+            except:
+                pass
         
-        # Plot non-medoid clients
-        for idx in cluster_client_indices:
-            client_coord = client_coords[idx]
+        # Plot client markers
+        for idx in cluster_indices:
+            client = clients[idx]
+            office_dist = road_matrix[0, idx + 1]
+            medoid_dist = road_matrix[medoid_idx + 1, idx + 1] if idx != medoid_idx else 0
             
-            if idx != medoid_client_idx:
-                ax.scatter(client_coord[0], client_coord[1], c=[color], s=100, 
-                          marker='o', zorder=3, edgecolors='black', linewidths=0.5)
-                
-                # Draw line from client to medoid
-                ax.plot([client_coord[0], medoid_coord[0]], 
-                       [client_coord[1], medoid_coord[1]],
-                       color=color, linewidth=1, alpha=0.4, zorder=1)
-                
-                # Show road distance on line
-                mid_x = (client_coord[0] + medoid_coord[0]) / 2
-                mid_y = (client_coord[1] + medoid_coord[1]) / 2
-                road_dist = road_matrix[idx + 1, medoid_client_idx + 1]
-        
-        # Plot medoid (larger, star marker)
-        ax.scatter(medoid_coord[0], medoid_coord[1], c=[color], s=400, marker='*',
-                  label=f'Cluster {cluster_id + 1} ({sum(cluster_mask)} clients)', 
-                  zorder=4, edgecolors='black', linewidths=1.5)
-        
-        # Annotate medoid
-        medoid_name = clients[medoid_client_idx].name
-        ax.annotate(f'C{cluster_id + 1}: {medoid_name}', 
-                   (medoid_coord[0], medoid_coord[1]), fontsize=8,
-                   xytext=(8, 8), textcoords='offset points',
-                   fontweight='bold', color='black',
-                   bbox=dict(boxstyle='round,pad=0.3', facecolor=color, alpha=0.5))
+            is_medoid = idx == medoid_idx
+            
+            popup_html = f"""
+                <b>{client.name}</b><br>
+                <b>Cluster:</b> {cluster_id + 1}<br>
+                <b>Distance from office:</b> {office_dist:.2f} km<br>
+                <b>Distance from medoid:</b> {medoid_dist:.2f} km
+                {'<br><b>★ MEDOID ★</b>' if is_medoid else ''}
+            """
+            
+            # Medoids get star icon, others get home icon
+            if is_medoid:
+                folium.Marker(
+                    location=[client.lat, client.lon],
+                    popup=popup_html,
+                    tooltip=f"★ MEDOID - Cluster {cluster_id + 1}: {client.name}",
+                    icon=folium.Icon(color=color, icon='star', prefix='fa')
+                ).add_to(m)
+            else:
+                folium.Marker(
+                    location=[client.lat, client.lon],
+                    popup=popup_html,
+                    tooltip=f"Cluster {cluster_id + 1}: {client.name}",
+                    icon=folium.Icon(color=color, icon='home', prefix='fa')
+                ).add_to(m)
     
-    ax.set_xlabel('MDS Dimension 1 (based on road distance)', fontsize=11)
-    ax.set_ylabel('MDS Dimension 2 (based on road distance)', fontsize=11)
-    ax.set_title('K-Medoids++ Clustering (MDS projection of Road Distance Matrix)\n'
-                 'Visual distance ≈ Road distance | Stars = Medoids', 
-                 fontsize=13, fontweight='bold')
-    ax.grid(True, alpha=0.3)
+    # Add legend
+    legend_html = f"""
+    <div style="position: fixed; 
+                bottom: 50px; right: 50px; width: 250px;
+                background-color: white; border: 2px solid grey; z-index: 9999;
+                font-size: 14px; padding: 10px; border-radius: 5px;">
+    <p style="margin: 0; font-weight: bold; font-size: 16px;">K-Medoids++ Clusters</p>
+    <hr style="margin: 5px 0;">
+    <p style="margin: 5px 0;"><b>Total clusters:</b> {n_clusters}</p>
+    <p style="margin: 5px 0;"><b>Total clients:</b> {len(clients)}</p>
+    <hr style="margin: 5px 0;">
+    """
     
-    ax.legend(loc='upper left', fontsize=9)
+    for cluster_id in range(n_clusters):
+        color = colors[cluster_id % len(colors)]
+        n_clients = np.sum(labels == cluster_id)
+        medoid_name = clients[medoid_indices[cluster_id]].name
+        legend_html += f'''
+        <p style="margin: 3px 0;">
+            <span style="background-color:{color}; padding: 2px 8px; color: white; border-radius: 3px;">
+                Cluster {cluster_id + 1}
+            </span> {n_clients} clients
+        </p>
+        <p style="margin: 1px 0 5px 10px; font-size: 11px;">
+            ★ Medoid: {medoid_name}
+        </p>
+        '''
     
-    plt.tight_layout()
-    plt.savefig(f'Output\\{filename}', dpi=150, bbox_inches='tight')
-    plt.show()
-    print(f"Saved K-Medoids MDS plot to Output\\{filename}")
+    legend_html += """
+    <hr style="margin: 5px 0;">
+    <p style="margin: 3px 0; font-size: 11px;">
+        <i class="fa fa-star"></i> = Medoid (cluster center)
+    </p>
+    </div>
+    """
+    m.get_root().html.add_child(folium.Element(legend_html))
+    
+    plugins.Fullscreen().add_to(m)
+    m.save(f"Output\\{filename}")
+    print(f"Saved K-Medoids cluster map to Output\\{filename}")
+
 
 
 def print_kmedoids_distance_table(locations: List[Location], labels: np.ndarray,
@@ -894,7 +952,7 @@ def plot_vrp_clusters_static(locations: List[Location],
     
     plt.tight_layout()
     plt.savefig(f'Output\\{filename}', dpi=150, bbox_inches='tight')
-    plt.show()
+    # plt.show()
     print(f"Saved VRP static plot to Output\\{filename}")
 
 
@@ -931,7 +989,7 @@ def plot_static_map(locations: List[Location], road_matrix: np.ndarray,
     
     plt.tight_layout()
     plt.savefig('Output\\delivery_map_static.png', dpi=150, bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
 
 def plot_openstreetmap(locations: List[Location], road_calculator: RoadDistanceCalculator,
