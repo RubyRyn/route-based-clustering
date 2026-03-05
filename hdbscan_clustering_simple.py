@@ -1,17 +1,23 @@
 """
-HDBSCAN Clustering based on Road Distance Matrix (Simple Version)
+HDBSCAN Clustering based on Road Distance Matrix
 
 Density-based clustering that:
 - Automatically finds the number of clusters
-- Uses road distance matrix (handles rivers, mountains, etc.)
+- Uses road distance matrix
 - Identifies outliers (isolated clients)
 """
 
 import numpy as np
 from typing import List
-from sklearn.cluster import HDBSCAN
-from location import Location
 
+from sklearn.metrics import silhouette_score
+# from sklearn.cluster import HDBSCAN
+import hdbscan
+from hdbscan import HDBSCAN
+from hdbscan import validity_index
+from location import Location
+import pandas as pd
+from itertools import product
 
 class HDBSCANClusteringSimple:
     """
@@ -22,7 +28,7 @@ class HDBSCANClusteringSimple:
     """
     
     def __init__(self, road_matrix: np.ndarray, locations: List[Location],
-                 min_cluster_size: int = 2, min_samples: int = 1):
+                 min_cluster_size: int = 3, min_samples: int = 1):
         """
         Args:
             road_matrix: Full distance matrix (office + clients) in km
@@ -48,13 +54,9 @@ class HDBSCANClusteringSimple:
         self.probabilities = None
         self.clusterer = None
     
+    
+
     def cluster(self) -> np.ndarray:
-        """
-        Cluster clients using HDBSCAN on road distances.
-        
-        Returns:
-            Array of cluster labels for each client (-1 = outlier)
-        """
         print(f"\n")
         print(f"HDBSCAN CLUSTERING (Road Distance Matrix)")
         print(f"\n")
@@ -64,6 +66,9 @@ class HDBSCANClusteringSimple:
         
         symmetric_matrix = (self.client_road_matrix + self.client_road_matrix.T) / 2
         np.fill_diagonal(symmetric_matrix, 0)
+        
+        # Ensure non-negative
+        symmetric_matrix = np.clip(symmetric_matrix, 0, None)
         
         self.clusterer = HDBSCAN(
             min_cluster_size=self.min_cluster_size,
@@ -78,14 +83,104 @@ class HDBSCANClusteringSimple:
         self.n_clusters = len(unique_labels[unique_labels >= 0])
         self.n_outliers = np.sum(self.labels == -1)
         
+        # Calculate DBCV
+        dbcv_score = None
+        if self.n_clusters > 0:
+            try:
+                dbcv_score = validity_index(
+                    symmetric_matrix, 
+                    self.labels, 
+                    metric='precomputed', 
+                    d=2
+                )
+            except Exception as e:
+                print(f"Warning: Could not calculate DBCV: {e}")
+
+        # Calculate silhouette score (excluding outliers)
+        sil = None
+        mask = self.labels != -1
+        if mask.sum() > 1 and self.n_clusters > 1:
+            try:
+                filtered_matrix = symmetric_matrix[mask][:, mask]
+                filtered_matrix = np.clip(filtered_matrix, 0, None)
+                np.fill_diagonal(filtered_matrix, 0)
+                sil = silhouette_score(filtered_matrix, self.labels[mask], metric='precomputed')
+            except Exception as e:
+                print(f"Warning: Could not calculate silhouette score: {e}")
+                
         print(f"\nHDBSCAN Clustering complete!")
         print(f"Clusters found: {self.n_clusters}")
         print(f"Outliers: {self.n_outliers}")
-        
-        self._print_cluster_stats()
+        print(f"DBCV Score: {dbcv_score}")
+        print(f"Silhouette Score: {sil if sil is not None else 'N/A'}")
         
         return self.labels
-    
+
+
+    def tune_hdbscan(self, min_cluster_sizes=range(2, 10),min_samples_range=range(1, 10)):
+        """
+        Grid search for optimal HDBSCAN parameters.
+        """
+        
+        # Use self.client_road_matrix directly
+        symmetric_matrix = (self.client_road_matrix + self.client_road_matrix.T) / 2
+        np.fill_diagonal(symmetric_matrix, 0)
+        
+        results = []
+        
+        for min_cluster_size, min_samples in product(min_cluster_sizes, min_samples_range):
+            
+            # Skip invalid combinations
+            if min_samples > min_cluster_size:
+                continue
+            
+            clusterer = HDBSCAN(
+                min_cluster_size=min_cluster_size,
+                min_samples=min_samples,
+                metric='precomputed'
+            )
+            
+            labels = clusterer.fit_predict(symmetric_matrix)
+            
+            # Calculate metrics
+            unique_labels = np.unique(labels)
+            n_clusters = len(unique_labels[unique_labels >= 0])
+            n_outliers = np.sum(labels == -1)
+            outlier_pct = n_outliers / len(labels) * 100
+            
+            # DBCV
+            if n_clusters > 0:
+                try:
+                    dbcv = validity_index(symmetric_matrix, labels, metric='precomputed', d=2)
+                except:
+                    dbcv = np.nan
+            else:
+                dbcv = np.nan
+            
+            # Silhouette (excluding noise)
+            mask = labels != -1
+            if n_clusters > 1 and mask.sum() > 1:
+                try:
+                    sil = silhouette_score(symmetric_matrix[mask][:, mask], labels[mask], metric='precomputed')
+                except:
+                    sil = np.nan
+            else:
+                sil = np.nan
+            
+            results.append({
+                'min_cluster_size': min_cluster_size,
+                'min_samples': min_samples,
+                'n_clusters': n_clusters,
+                'n_outliers': n_outliers,
+                'outlier_pct': round(outlier_pct, 1),
+                'dbcv': round(dbcv, 4) if not np.isnan(dbcv) else np.nan,
+                'silhouette': round(sil, 4) if not np.isnan(sil) else np.nan
+            })
+        
+        df = pd.DataFrame(results)
+        return df
+
+
     def _print_cluster_stats(self):
         """Print statistics for each cluster."""
         print(f"\n")

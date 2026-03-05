@@ -1,1 +1,6 @@
-input/
+Input/
+Output/
+manim_scenes/
+media/
+__pycache__/
+.vscode/
