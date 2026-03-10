@@ -1,6 +1,7 @@
 Input/
 Output/
-manim_scenes/
+manim_scenes
+manim_scenes/mawlamyinegyun_data.json
 media/
 __pycache__/
 .vscode/
